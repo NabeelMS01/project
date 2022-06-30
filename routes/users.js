@@ -48,7 +48,7 @@ router.get("/", async function (req, res, next) {
   if (req.session.user) {
     cartCount = await userHelper.getCartCount(req.session.user._id);
     req.session.cartCount = cartCount;
-    req.session.userData = await userHelper.getUserData(req.session.user);
+    req.session.userData = await userHelper.getUserData(req.session.user._id);
   }
   try {
     await userHelper.validateOffer();
