@@ -433,19 +433,25 @@ router.post("/place-order", verifyLogin, async (req, res) => {
 });
 
 router.get("/success/:id", async (req, res) => {
-console.log(req.params.id)
+
 
   req.session.userData = await userHelper.getUserData(req.params.id);
+
+
 let  totalPrice = await userHelper.getTotalAmount(req.session.userData._id);
 
 
-req.session.totalPrice=totalPrice
+
 
 console.log(req.session.totalPrice);
 console.log("4444444444444444");
+console.log(req.query.PayerID);
+console.log(req.query.paymentId);
+console.log("4444444444444444");
+
   let payerId = req.query.PayerID;
   let paymentId = req.query.paymentId;
-  let total = req.session.totalPrice;
+  let total = parseInt(totalPrice);
   let data = req.session.orderdata;
 
   let products = await userHelper.getCartProducts(req.session.userData);
