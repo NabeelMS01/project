@@ -443,7 +443,7 @@ let  totalPrice = await userHelper.getTotalAmount(req.session.userData._id);
 
 
 
-console.log(req.session.totalPrice);
+console.log(totalPrice);
 console.log("4444444444444444");
 console.log(req.query.PayerID);
 console.log(req.query.paymentId);
@@ -463,7 +463,7 @@ console.log("4444444444444444");
         products,
         total,
         req.session.appliedCoupon,
-        req.session.user._id
+        req.params.id,
       )
       .then((response) => {
         res.redirect("/orders");
