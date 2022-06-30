@@ -262,7 +262,7 @@ router.get("/product-details/:id", (req, res) => {
 router.get("/cart", verifyLogin, async (req, res) => {
   // adminHelper.getAllCategory().then((category) => {
   cartCount = await userHelper.getCartCount(req.session.user._id);
-  let products = await userHelper.getCartProducts(req.session.user._id);
+  let products = await userHelper.getCartProducts(req.session.userData);
   let totalAmount = await userHelper.getTotalAmount(req.session.user._id);
   let addresses = await userHelper.getAddress(req.session.user._id);
   let cart = await userHelper.getCartByUser(req.session.user._id);
@@ -375,7 +375,7 @@ router.post("/place-order", verifyLogin, async (req, res) => {
   // console.log(req.body);
   req.session.orderdata = req.body;
   let orderId = rn(options);
-  let products = await userHelper.getCartProducts(req.session.userData._id);
+  let products = await userHelper.getCartProducts(req.session.userData);
   let totalPrice = await userHelper.getTotalAmount(req.session.user._id);
   req.session.totalPrice = totalPrice;
   let userData = await userHelper.getUserData(req.session.user._id);
@@ -439,7 +439,7 @@ router.get("/success/:id", async (req, res) => {
   let total = req.session.totalPrice;
   let data = req.session.orderdata;
 
-  let products = await userHelper.getCartProducts(req.session.userData._id);
+  let products = await userHelper.getCartProducts(req.session.userData);
 
   userHelper.verifypaypal(payerId, paymentId, total).then((response) => {
     userHelper
@@ -457,9 +457,9 @@ router.get("/success/:id", async (req, res) => {
 });
 
 router.post("/verify-payment", async (req, res) => {
-  let products = await userHelper.getCartProducts(req.session.userData._id);
+  let products = await userHelper.getCartProducts(req.session.userData);
   console.log(products);
-  let totalPrice = await userHelper.getTotalAmount(req.session.userData._id);
+  let totalPrice = await userHelper.getTotalAmount(req.session.userData);
   console.log("/////////////////");
 
   await userHelper
