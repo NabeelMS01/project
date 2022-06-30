@@ -561,8 +561,7 @@ let myChart = new Chart(ctx, {
         labels: ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat','Sun'],
         datasets: [{
             label: '# Total Sale',
-            data: [   {{#if  orderByday.[0].TotalSum }}
-             {{ orderByday.[0].TotalSum}}   {{else}}  0  {{/if}},
+            data: [   {{#if  orderByday.[0].TotalSum }}  {{ orderByday.[0].TotalSum}}   {{else}}  0  {{/if}},
              {{#if  orderByday.[1].TotalSum  }} {{ orderByday.[1].TotalSum}}   {{else}}  0  {{/if}}   ,
                {{#if  orderByday.[2].TotalSum  }} {{ orderByday.[2].TotalSum}}   {{else}}  0  {{/if}}   ,
                {{#if  orderByday.[3].TotalSum  }} {{ orderByday.[3].TotalSum}}   {{else}}  0  {{/if}}   , 
