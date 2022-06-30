@@ -438,7 +438,10 @@ console.log(req.params.id)
   req.session.userData = await userHelper.getUserData(req.params.id);
 console.log(req.body);
 
-req.session.totalPrice=300
+req.session.totalPrice
+
+console.log(req.session.totalPrice);
+console.log("4444444444444444444");
   let payerId = req.query.PayerID;
   let paymentId = req.query.paymentId;
   let total = req.session.totalPrice;
