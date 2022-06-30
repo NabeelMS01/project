@@ -262,7 +262,7 @@ router.get("/product-details/:id", (req, res) => {
 router.get("/cart", verifyLogin, async (req, res) => {
   // adminHelper.getAllCategory().then((category) => {
   cartCount = await userHelper.getCartCount(req.session.user._id);
-  let products = await userHelper.getCartProducts(req.session.user);
+  let products = await userHelper.getCartProducts(req.session.userData);
   let totalAmount = await userHelper.getTotalAmount(req.session.user._id);
   let addresses = await userHelper.getAddress(req.session.user._id);
   let cart = await userHelper.getCartByUser(req.session.user._id);
@@ -375,10 +375,12 @@ router.post("/place-order", verifyLogin, async (req, res) => {
   // console.log(req.body);
   req.session.orderdata = req.body;
   let orderId = rn(options);
-  let products = await userHelper.getCartProducts(req.session.user);
+  let products = await userHelper.getCartProducts(req.session.userData);
   let totalPrice = await userHelper.getTotalAmount(req.session.user._id);
   req.session.totalPrice = totalPrice;
   let userData = await userHelper.getUserData(req.session.user._id);
+  req.session.userData
+
   //   if(req.body.payment_method=="online"){
   //   console.log(products)
   //        console.log("online payment ")
@@ -438,7 +440,7 @@ router.get("/success/:id", async (req, res) => {
   let paymentId = req.query.paymentId;
   let total = req.session.totalPrice;
   let data = req.session.orderdata;
-
+console.log(req.session.userData);
   let products = await userHelper.getCartProducts(req.session.userData);
 
   userHelper.verifypaypal(payerId, paymentId, total).then((response) => {
