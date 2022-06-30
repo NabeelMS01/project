@@ -1,0 +1,179 @@
+<section class="vh-100" style="background-color: #ffffff; ">
+  <div class="container py-5 h-100" >
+    <div class="row d-flex justify-content-center align-items-center h-100"  >
+      <div class="col col-xl-10">
+        <div class="card" style="border-radius: 1rem;">
+          <div class="row g-0">                                                   
+            <div class="col-md-6 col-lg-5 d-none d-md-block">
+              <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=60&raw_url=true&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fG1vZGVsfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500"
+                alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" />
+            </div>
+            <div class="col-md-6 col-lg-7 d-flex ">
+              <div class="card-body  p-lg-2 text-black">
+
+                <form method="post" action="/signup">
+ 
+                  <div class="d-flex align-items-center  pb-1">
+               
+                     <span class=" fw-bold mb-3 mt-3">  <img style="width:140px ;" src="img/logo.png"</span>
+                  </div>
+
+                  <h4 class="fw-normal  pb-3" style="letter-spacing: 1px;">Signup</h4>
+     <span class="text-danger"> {{signupErr}}</span>
+
+                  <div class="form-outline mb-2 ">
+                     <span id="nameSpan" class="text-danger"></span>
+                    <input style="font-size: 14px;" type="text" id="name"  name="name" class="form-control form-control-lg" onkeyup="return validateName()" />
+                    <label class="form-label"  for="form2Example17">Name</label>
+                 
+                  </div>
+
+                  <div class="form-outline  mb-2 ">
+                    <span id="emailSpan" class="text-danger"></span>
+                    <input  style="font-size: 14px;"  type="email" id="email"  name="email"  class="form-control form-control-lg "  onkeyup="return validEmail()" />
+                    <label class="form-label" id="emailId" for="form2Example17">Email address</label>
+                 
+
+                  </div>
+
+                  <div class="form-outline  mb-2">
+                    <span id="phoneSpan" class="text-danger"></span>
+                    <input  style="font-size: 14px;"  type="number" name="phone" id="phoneNum" class="form-control form-control-lg"   onkeyup=" return validatePhone()"/>
+                    <label class="form-label" for="mobilenumber">Mobile number</label>
+                  
+                  </div>
+                  
+                  <div class="form-outline  mb-2">
+                       <span id="passwordSpan" class="text-danger"></span>
+                    <input  style="font-size: 14px;" type="password"  name="password" id="password" class="form-control form-control-lg"  onkeyup="return validPassowrd()"/>
+                    <label class="form-label" for="password">Create a Password</label>
+                    
+                  </div>
+                     <div class="form-outline  mb-2">
+                       <span id="cnfpasswordSpan" class="text-danger"></span>
+                    <input  style="font-size: 14px;" type="password"  id="cnfpassword" class="form-control form-control-lg"  onkeyup="return validcnfPassowrd()"/>
+                    <label class="form-label" for="password">Re Enter Password</label>
+                    
+                  </div>
+
+                  <div  class="pt-1 pb-2 ps-5  pe-5">
+                    <button   class="btn btn-dark btn-lg btn-block" onclick="return validation() " type="submit">Register</button>
+                  </div>
+
+                  <p class=" pb-lg-2" style="color: #393f81;">already have an account? <a href="/login"
+                      style="color: #393f81;">Login</a></p>
+              
+                </form>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+<script>
+    
+    var errorName = document.getElementById('nameSpan')
+    var errorEmail = document.getElementById('emailSpan')
+    var errorPassword = document.getElementById('passwordSpan')
+    var errorPhone = document.getElementById('phoneSpan')
+  var errorcnfPassword = document.getElementById('cnfpasswordSpan')
+
+       function validEmail() {
+        const name = document.getElementById('email').value
+        if (name == "") { 
+            errorEmail.innerHTML = "enter you email address"  
+            return false
+
+
+        }
+        if (!name.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+            errorEmail.innerHTML = 'enter a proper email adress'
+            return false 
+        }
+
+        errorEmail.innerHTML = null
+        return true
+    }
+     
+    function validateName() {
+    
+        const name = document.getElementById('name').value;
+        if (name == "") {
+            errorName.innerHTML = 'Enter your Name'
+            return false
+        }
+        if (!name.match(/^[a-zA-Z ]*$/)) {
+            errorName.innerHTML = 'Numbers and symbols are not allowed'
+            return false
+        }
+        errorName.innerHTML = null
+        return true
+
+    }
+      function validatePhone() {
+    
+        const name = document.getElementById('phoneNum').value;
+        if (name == '') {
+            errorPhone.innerHTML = 'Enter your phone number to continue'
+            return false
+        }else if(name.length<10){
+            errorPhone.innerHTML = 'Invalid Mobile number'
+            return false
+        }
+   
+        errorPhone.innerHTML = null
+        return true
+
+    }
+ 
+
+    function validPassowrd() {
+        const name = document.getElementById('password').value
+        if (name == "") {
+            errorPassword.innerHTML = "enter a password"
+            return false
+        }
+        if (name.length < 3) {
+            errorPassword.innerHTML = "password should be more than three characters"
+            return false
+        }
+        errorPassword.innerHTML = null
+        return true
+    }
+   
+    function validcnfPassowrd() {
+        const name = document.getElementById('cnfpassword').value
+        const password = document.getElementById('password').value
+       if( name !=password){
+              errorcnfPassword.innerHTML = "password doesnt match"
+            return false
+    }
+          if (name == "") {
+            errorcnfPassword.innerHTML = "enter a password"
+            return false
+        }
+        if (name.length < 3) {
+            errorcnfPassword.innerHTML = "password should be more than three characters"
+            return false
+        }
+    
+        errorcnfPassword.innerHTML = null
+        return true
+    }
+
+    function validation() {
+        if (  !validEmail() &&!validateName() && !validPassowrd() && !validatePhone() && !validcnfPassowrd()  ) {
+            return false
+        }else if( !validEmail() ||!validateName() || !validPassowrd()||!validatePhone() || ! validcnfPassowrd()  ){
+           return false
+        }else{   return true}
+
+    }
+</script>

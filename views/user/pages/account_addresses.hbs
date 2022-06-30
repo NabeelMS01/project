@@ -1,0 +1,397 @@
+<hr>
+<div style="height: 100vh;" class="container bootstrap snippet "  >
+
+    <div class="row">
+        <div class="col-sm-2">
+            <!--left col-->
+
+            <ul class="list-group">
+                <li class="list-group-item text-muted">
+                    Menu
+                    <i class="fa fa-dashboard fa-1x"></i>
+                </li>
+                <li class="list-group-item text-right">
+                    <span class="pull-left"><strong>
+                            <a href="/orders"> Orders</a>
+                        </strong></span>
+                </li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong><a href="/account-addresses">
+                                Address</a>
+                        </strong></span>
+                </li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong><a
+                                href="account-password-change">Change
+                                Password </a>
+                        </strong></span>
+                </li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong><a href=""></a> </strong></span>
+                </li>
+            </ul>
+
+            {{! <div class="panel panel-default">
+                <div class="panel-heading">Social Media</div>
+                <div class="panel-body">
+                    <i class="fa fa-facebook fa-2x"></i> <i class="fa fa-github fa-2x"></i> <i
+                        class="fa fa-twitter fa-2x"></i> <i class="fa fa-pinterest fa-2x"></i> <i
+                        class="fa fa-google-plus fa-2x"></i>
+                </div>
+            </div> }}
+
+        </div>
+        <!--/col-3-->
+
+        <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      
+
+ <form id="form-addAddress" class=" m-5">
+          <!-- 2 column grid layout with text inputs for the first and last names -->
+          <div class="row mb-4">
+            <div class="col">
+              <div class="form-outline">
+                <span id="nameSpan" class="text-danger"></span>
+                <input name="name" type="text" id="name" onkeyup="return validName()" class="form-control"required />
+                <label class="form-label" for="form7Example1"> Name</label>
+              </div>
+            </div>
+           
+          </div>
+
+          <!-- Email input -->
+          <div class="form-outline mb-4">
+               <span id="emailSpan" class="text-danger"></span>
+            <input name="email" type="email" id="email" onkeyup="return validEmail()" class="form-control" required />
+            <label class="form-label" for="form7Example5">Email</label>
+          </div>
+
+          <!-- address input -->
+          <div class="form-outline mb-4">
+               <span id="addressSpan" class="text-danger"></span>
+            <input name="address" type="text" id="address" onkeyup="return validAddress()" class="form-control"  required/>
+            <label class="form-label" for="form7Example4">Address</label>
+          </div>
+
+          <!-- Email input -->
+          <div class="form-outline mb-4">
+       <span id="pincodeSpan" class="text-danger"></span>
+            <input name="pincode" type="number" id="pincode" onkeyup="return validPincode()" class="form-control" />
+            <label class="form-label" for="form7Example5">Pin code</label>
+          </div>
+
+          <!-- Number input -->
+          <div class="form-outline mb-4">
+                          <span id="numberSpan" class="text-danger"></span>
+            <input name="phone" type="number" id="phone" onkeyup="return validPhone() " class="form-control" />
+            <label class="form-label" for="phone">Phone</label>
+          </div>
+
+          <!-- Message input -->
+             <button onclick="return validation()" type="submit" class="btn btn-primary btn-lg btn-block">
+          Add address
+        </button>
+
+         
+        </form>
+
+
+
+  
+
+
+
+
+    </div>
+  </div>
+</div>
+        <div class="col-sm-10">
+<button type="button" class="btn btn-success" data-toggle="modal" data-target=".bd-example-modal-lg">Add new address</button>
+
+
+
+            
+
+            <div class="row mt-5">
+                {{#each address}}
+
+  <div class="modal fade {{this._id}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      
+
+ <form  id="form-editAddress" method="post" action="/edit-address/{{this._id}}"  class=" m-5" >
+          <!-- 2 column grid layout with text inputs for the first and last names -->
+          <div class="row mb-4">
+            <div class="col">
+              <div class="form-outline">
+                <span id="nameSpan" class="text-danger"></span>
+                <input name="name" type="text" id="name" onkeyup="return validName()" value="{{this.name}}" class="form-control"required />
+                <label class="form-label" for="form7Example1"> Name</label>
+              </div>
+            </div>
+           
+          </div>
+
+          <!-- Email input -->
+          <div class="form-outline mb-4">
+            <span id="emailSpan" class="text-danger"></span>
+            <input name="email" type="email" id="email"  onkeyup="return validEmail()" value="{{this.email}}" class="form-control" required />
+            <label class="form-label" for="form7Example5">Email</label>
+          </div>
+
+          <!-- address input -->
+          <div class="form-outline mb-4">
+              <span id="addressSpan" class="text-danger"></span>
+            <input name="address"  value="{{this.address}}" type="text" id="address" onkeyup="return validAddress()" class="form-control"  required/>
+            <label class="form-label" for="form7Example4">Address</label>
+          </div>
+
+          <!-- Email input -->
+          <div class="form-outline mb-4">
+               <span id="pincodeSpan" class="text-danger"></span>
+            <input name="pincode" type="number" value="{{this.pincode}}" onkeyup="return validPincode()"  id="pincode" class="form-control" required />
+            <label class="form-label" for="form7Example5">Pin code</label>
+          </div>
+
+          <!-- Number input -->
+          <div class="form-outline mb-4">
+              <span id="numberSpan" class="text-danger"></span>
+            <input name="phone" type="number" id="phone" value="{{this.phone}}" onkeyup="return validPhone()" class="form-control" required />
+            <label class="form-label" for="phone">Phone</label>
+          </div>
+
+          <!-- Message input -->
+             <button  type="button  " onclick="return validation()" class="btn btn-primary btn-lg btn-block">
+          Update
+        </button>
+
+         
+        </form>
+
+
+
+  
+
+
+
+
+    </div>
+  </div>
+</div>
+
+
+                <div class="col-md">
+        <div  style="height:180px;" ><p> {{this.name}} <br> {{this.email}} <br>{{this.address}} <br>{{this.pincode}} </p>
+                    
+                
+            
+                     <p> {{this.phone}} <br> </div>             
+                     <button onclick="deleteAddress('{{this._id}}' )"  class="btn btn-danger " >Delete</button> 
+                     <button type="button" class="btn btn-success" data-toggle="modal" data-target=".{{this._id}}">Edit</button>
+
+                     
+                        </p>
+
+
+               
+                </div>
+              {{/each}}
+            </div>
+
+
+
+
+            {{!***************************************** Table end *************************}}
+        </div>
+
+    </div>
+    <!--/col-9-->
+</div>
+<!--/row-->
+
+<script>   
+    
+
+
+
+    var errorName = document.getElementById('nameSpan')
+      var errorEmail = document.getElementById('emailSpan')
+  var errorAddress = document.getElementById('addressSpan')
+    var errorPincode = document.getElementById('pincodeSpan')
+      var errorPhone = document.getElementById('numberSpan')
+
+  function validName() {
+        const name = document.getElementById('name').value
+        if (name == "") {
+            errorName.innerHTML = "Field cannot be empty"
+            return false
+        }
+      
+        errorName.innerHTML = null
+        return true
+    }
+      function validEmail() {
+        const name = document.getElementById('email').value
+        if (name == "") { 
+            errorEmail.innerHTML = "enter you email address"  
+            return false
+
+
+        }
+        if (!name.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+            errorEmail.innerHTML = 'enter a proper email adress'
+            return false 
+        }
+
+        errorEmail.innerHTML = null
+        return true
+    }
+
+  function validPincode() {
+        const name = document.getElementById('pincode').value
+        if (name == "") {
+            errorPincode.innerHTML = "Field cannot be empty"
+            return false
+        }
+      
+        errorPincode.innerHTML = null
+        return true
+    }
+
+ function validPhone() {
+        const name = document.getElementById('phone').value
+        if (name == "") {
+            errorPhone.innerHTML = "Field cannot be empty"
+            return false
+        }
+         if (name.length>10) {
+            errorPhone.innerHTML = "Invalid phone"
+            return false
+        }
+      
+      
+        errorPhone.innerHTML = null
+        return true
+    }
+
+
+    
+    
+  function validAddress() {
+        const name = document.getElementById('address').value
+        if (name == "") {
+            errorAddress.innerHTML = "Field cannot be empty"
+            return false
+        }
+      
+        errorAddress.innerHTML = null
+        return true
+    }
+
+
+
+    function validation() {
+        if (  !validEmail() && !validName() && !validPincode()&& ! validAddress() && ! validPhone() ) {
+            return false
+        }else if( !validEmail()|| !validName()|| !validPincode()|| ! validAddress()|| ! validPhone()){
+           return false
+        }else{   return true}
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+         function deleteAddress(id) {
+
+    console.log(id)
+    swal({
+      title: "Are you sure? You want to delete this address",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+
+
+          $.ajax(
+            {
+              url: `/deleteAddress/${id}`,
+              method: 'get',
+
+              success: (response) => {
+
+                if (response.status) {
+              
+                  swal("Poof! address has been deleted!", {
+                    icon: "success",
+                  }).then(()=>{
+                     location.reload()
+                  });
+                 
+                }
+              }
+            }
+          )
+        } else {
+          swal("address  is not deleted");
+        }
+      });
+  }
+
+
+
+
+    $("#form-addAddress").submit(function(e) {
+        console.log(e)
+     e.preventDefault()  // prevent actual form submit
+  
+  //get submit url [replace url here if desired]
+    $.ajax({
+         type: "POST",
+         url: "/add-address",
+         data: $("#form-addAddress").serialize(), // serializes form input
+         success: function(response){
+            
+            if(response.status){
+                  swal("Poof! address added", {
+                    icon: "success",
+                  }).then(()=>{
+            
+                     location.href='/account-addresses'
+                  });
+            }
+
+
+         }
+    });
+});
+
+
+  // $(document).ready(function () {
+  // $('.confirm_del').click(function (e) {
+
+
+  //})
+
+  //})
+
+
+
+
+</script>
+
+
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>

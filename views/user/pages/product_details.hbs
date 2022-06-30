@@ -1,0 +1,321 @@
+<!-- Shop Details Section Begin -->
+<section class="shop-details">
+    <div class="product__details__pic">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="product__details__breadcrumb">
+                        <a href="./index.html">Home</a>
+                        <a href="./shop.html">Shop</a>
+                        <span>Product Details</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <ul class="nav nav-tabs" role="tablist">
+
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">
+
+                                <div class="product__thumb__pic set-bg" data-setbg="uploads/{{product.images.[0]}}">
+
+                                </div>
+                            </a>
+                        </li>
+
+                        {{!-- {{!-- {{#each product.images}} --}}
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tabs-1" role="tab">
+                                <div class="product__thumb__pic set-bg" data-setbg="uploads/{{product.images.[0]}}">
+                                    <img src="/uploads/{{product.images.[0]}}" alt="" />
+                                </div>
+
+                            </a>
+                        </li>
+                        {{!-- {{/each}} --}}
+
+                    </ul>
+                </div>
+                <div class="col-lg-6 col-md-9">
+                    <div class="tab-content">
+
+                        <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                            <div class="product__details__pic__item">
+
+                                {{!-- <div style="width: 400px;" id="img-container">
+                                    <div id="lens"> </div>
+                                    <img  id="featuredimg" src="/uploads/{{product.images.[0]}}" alt="" />
+ 
+                                </div> --}}
+               
+               
+	<div id="content-wrapper">
+
+		<div class="column">
+			<div id="img-container">
+				<div id="lens"></div>
+				<img id=featured src="/uploads/{{product.images.[0]}}" >
+			</div>
+			
+		</div>
+
+	
+
+	</div>
+
+
+
+
+
+
+
+
+
+
+                            </div>
+                        </div>
+
+                        <div class="tab-pane" id="tabs-1" role="tabpanel">
+                            <div class="product__details__pic__item">
+                                <img src="/uploads/{{this}}" alt="" />
+                            </div>
+                        </div>
+
+                        {{!-- <div class="tab-pane" id="tabs-3" role="tabpanel">
+                            <div class="product__details__pic__item">
+                                <img src="/uploads/{{product.images.[2]}}" alt="">
+                            </div>
+                        </div>
+                        --}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="product__details__content">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="col-lg-8">
+                    <div class="product__details__text">
+                        <h4>{{product.name}}</h4>
+                        <div class="rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o"></i>
+                            <span> - 5 Reviews</span>
+                        </div>
+
+                        {{#if product.offer_price}}
+                        <h3> ₹ {{product.offer_price}}<span>{{product.price}}</span></h3>
+                           {{else}}
+        <h3> ₹ {{product.price}}<span></span></h3>
+                           {{/if}}
+
+                      
+                        <div class="product__details__option">
+                            <div class="product__details__option__size">
+                                <span>Size:</span>
+                                <label for="xxl">xxl
+                                    <input type="radio" id="xxl" />
+                                </label>
+                                <label class="active" for="xl">xl
+                                    <input type="radio" id="xl" />
+                                </label>
+                                <label for="l">l
+                                    <input type="radio" id="l" />
+                                </label>
+                                <label for="sm">s
+                                    <input type="radio" id="sm" />
+                                </label>
+                            </div>
+                            <div class="product__details__option__color">
+                                <span>Color:</span>
+                                <label class="c-1" for="sp-1">
+                                    <input type="radio" id="sp-1" />
+                                </label>
+                                <label class="c-2" for="sp-2">
+                                    <input type="radio" id="sp-2" />
+                                </label>
+                                <label class="c-3" for="sp-3">
+                                    <input type="radio" id="sp-3" />
+                                </label>
+                                <label class="c-4" for="sp-4">
+                                    <input type="radio" id="sp-4" />
+                                </label>
+                                <label class="c-9" for="sp-9">
+                                    <input type="radio" id="sp-9" />
+                                </label>
+                            </div>
+                        </div>
+                        <div class="product__details__cart__option">
+                            
+               <div onclick="addToCart('{{product._id}}')" >       <a  style="color: white; cursor: pointer;"  class="primary-btn">add to cart</a>    </div>            
+                        </div>
+                        <div class="product__details__btns__option">
+                            <a style="cursor: pointer;" onclick="addtoWishlist('{{product._id}}')" ><i class="fa fa-heart"></i> add to wishlist</a>
+                       
+                        </div>
+                        <div class="product__details__last__option">
+                         
+                            <ul>
+                
+                                <li><span>Categories:</span> {{product.category_name}}</li>
+                                <li><span>Tag:</span> Clothes, Skin, Body</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="product__details__tab">
+                        
+                           <div class="product__details__tab__content m-auto"style="width: 80%;" >
+                                      <h5>Products Infomation</h5>
+                                    <p >{{product.description}}</p>
+                                    <div class="product__details__tab__content__item">
+                                      
+                                        
+                                  
+                                    </div>
+                                   
+                                </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Shop Details Section End -->
+
+<script>
+function addtoWishlist(proId){
+
+     $.ajax(
+                {
+                    url: `/add-to-wishlist/${proId}`,
+                    data: {
+                      product: proId,
+                       
+                    },
+                    method: "GET",
+                    success: (response) => {
+          //    if(!response.userloggedin){
+     //   location.href='/login'
+
+            //  }  
+               console.log( response )
+  if(response.addedtowishlist){
+                     console.log( response )
+
+             swal("Poof! Product added to wishlist!", {
+                  icon: "success",
+                   timer: 1200,
+                   buttons:false,
+                  })
+                               
+                        }
+
+
+   if(response.wishlistData==true){
+   
+         swal("Poof! Product already in wishlist!", {
+                  icon: false,
+                  buttons:false,
+                   timer: 1500,
+                  })
+
+          
+}
+
+          
+                   
+    
+                    }
+                }
+            )
+
+}
+
+
+    function imagezoom(imgId) {
+        let img = document.getElementById(imgId) ;
+        let lens =  document.getElementById('lens');
+       lens.style.backgroundImage = `url(${img.src})`;
+        let ratio = 3 ;
+        
+        lens.style.backgroundSize = (img.width * ratio) + 'px ' +
+            (img.height * ratio) + 'px';
+            
+             img.addEventListener("mousemove", moveLens);
+
+        lens.addEventListener("mousemove", moveLens);
+         img.addEventListener("mousemove", moveLens);
+
+        img.addEventListener("touchmove", moveLens) ;
+        
+        function moveLens() {
+            let pos  = getCursor() ;
+                 console.log(pos)
+             let positionLeft =pos.x - (lens.offsetWidth /2) 
+
+             let positionTop = pos.y - (lens.offsetHeight /2)
+
+
+             lens.style.left=positionLeft + 'px'
+             lens.style.top=positionTop +'px'
+
+             if(positionLeft < 0 ){
+            positionLeft = 0
+
+             }
+
+             if(positionTop < 0 ){
+            positionTop = 0
+
+             }
+
+               if(positionLeft > img.width - lens.offsetWidth /3 ){
+            positionLeft =  img.width - lens.offsetWidth /3
+
+             }
+               if(positionTop > img.height - lens.offsetHeight /3 ){
+            positionTop =  img.height - lens.offsetHeight /3
+
+             }
+
+ 
+ lens.style.backgroundPosition= "-" + (pos.x * ratio) + 'px -' +(pos.y * ratio) + 'px' 
+
+
+
+        };
+
+        function getCursor() {
+
+
+
+
+let e = window.event
+ let bounds = img.getBoundingClientRect()
+
+ //console.log('e :',e)
+  //console.log('bound :',bounds)
+                                                                                                                                                                                                                       
+            let x = e.pageX - bounds.left;
+            let y = e.pageY - bounds.top;
+
+                x= x- window.pageXOffset;
+                y= y-window.pageYOffset;
+            return { 'x': x ,'y': y }
+
+
+        }
+    } ;
+    imagezoom('featuredimg')
+
+</script> 

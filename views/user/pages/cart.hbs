@@ -1,0 +1,410 @@
+<section class="shopping-cart spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                {{#if products}}
+                <div class="shopping__cart__table">
+
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th> </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+
+
+                            {{#each products }}
+                            <tr>
+
+                                <td class="product__cart__item">
+                                    <div class="product__cart__item__pic">
+                                        <img style="width: 80px;" src="/uploads/{{this.product.images.[0]}}" alt="">
+                                    </div>
+                                    <div class="product__cart__item__text">
+                                        <h6>{{this.product.name}}</h6>
+
+                                    </div>
+                                </td>
+
+
+                                <td class="quantity__item">
+
+
+                                    <button class="cart-item-count btn btn-primary mr-2"
+                                        style="border: none; font-weight: bold ;font-size: 20px;height: 40; width:40 ;"
+                                        onclick='changeQuantity("{{this._id}}","{{this.product._id}}","{{../user._id}}",-1 ) '>-</button>
+
+
+
+                                    <span id="{{this.product._id}}"> {{this.quantity}} </span>
+                                    <button class="cart-item-count btn btn-primary ml-2"
+                                        style=" border: none; font-size: 20px; font-weight: bold; height: 40;width:40 ; "
+                                        onclick='changeQuantity("{{this._id}}","{{this.product._id}}","{{../user._id}}", 1 )'>+</button>
+                                </td>
+                                {{#if this.product.offer_status}}
+                                <td class="cart__price"> ₹ {{this.product.offer_price}} </td>
+                                {{else}}
+                                <td class="cart__price"> ₹ {{this.product.price}} </td>
+                                {{/if}}
+
+
+                                <td class="cart__close"><i
+                                        onclick='removeCartProduct( "{{this._id}}","{{this.product._id}}" )'
+                                        class="fa fa-close"></i></td>
+                            </tr>
+                            {{/each}}
+
+
+
+                        </tbody>
+                    </table>
+
+
+                </div>
+                {{else}}
+                <div>
+
+                    <h3 class="m-auto text-center">Your cart is empty</h3>
+                </div>
+                {{/if}}
+
+            </div>
+
+            {{#if products}}
+            <div class="modal fade bd-example-modal-lg show-coupons" tabindex="-1" role="dialog"
+                aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content ">
+                        <form action="/applycodetocart" method="post">
+                            <div class="row mt-5 mb-3">
+                                {{#if couponCodes}}
+                                {{#each couponCodes}}
+
+
+
+
+                                <div class="col-5 m-auto    ">
+                                    <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+                                        <div class="card-header m-auto">Coupon</div>
+                                        <div class="card-body m-auto">
+                                            <h5 class="card-title">₹ {{this.offer}} OFF</h5>
+                                            <p class="card-text "> <input class="mr-1" type="radio" name="coupon_code"
+                                                    value="{{this.coupon_code}}" required > {{this.coupon_code}} </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                {{!-- <h4> <input type="radio" name="coupon_code" value="{{this.coupon_codes}}">
+                                    {{this.coupon_code}}</h4>
+                                <small>₹{{this.offer}} OFF</small>--!}
+                                --}}
+
+
+
+
+
+
+                                {{/each}}
+
+
+
+
+
+                             <div class="row" >   <button style="width: 150px ;" class="btn btn-primary mb-4  m-auto  ">Use
+                                    Coupon</button></div>
+{{else}}
+
+<div style="height: 400px;" class="row">
+
+<div class="col-10 m-auto" ><h4 class="m-auto" >Sorry we have no coupons available at the moment !!</h4></div>
+ 
+</div>
+
+
+
+                                    {{/if}}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal -->
+            {{!-- <div class="modal fade " id="exampleModal" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content m-auto r-0 ">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Available coupons</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Select Coupon</button>
+                        </div>
+                    </div>
+                </div>
+            </div> --}}
+            <div class="col-lg-4">
+                <div class="cart__discount">
+                    <h6>Discount codes</h6>
+                    <span id="invalidCouponSpan" class="text-danger"></span>
+                    <form id="couponform">
+
+                        <input onkeyup="invalidCoupon()" name="coupon_code" type="text" value="{{couponcode}}">
+                        <button type="submit">Apply</button>
+                    </form>
+                    <h6 style="cursor: pointer;" data-toggle="modal" data-target=".show-coupons">Show available coupons
+                        for you</h6>
+
+
+                </div>
+                {{#if couponmsg}}
+                <span id="couponmsgspan" class="text-danger">{{couponmsg}}</span> <span
+                    onclick="removeCoupon('{{cart._id}}')" style="color: rgb(0, 47, 255); cursor: pointer; "
+                    id="removecpn">remove coupon</span>
+                {{/if}}
+
+                <div class="cart__total">
+                    <h6>Cart total</h6>
+                    <ul>
+                        <li>Subtotal <span>₹ <span id="totalAmount">{{totalAmount}} </span></span></li>
+                        <li>Total <span>₹ <span id="subTotal">{{totalAmount}} </span></span></li>
+                    </ul>
+                    {{!-- <a href="/place-order" class="primary-btn"></a> --}}
+                    {{#if addresses}}
+                    <button type="button" class="primary-btn ml-auto mr-auto pl-5 pr-5" data-toggle="modal"
+                        data-target=".large-modal">CHECKOUT</button>
+                    {{else}}
+                    <button type="button" onclick="location.href='/place-order'"
+                        class="primary-btn ml-auto mr-auto pl-5 pr-5">CHECKOUT</button>
+                    {{/if}}
+
+
+
+
+                </div>
+            </div>
+
+
+
+            {{/if}}
+            <div style="height: 200px;"></div>
+        </div>
+
+
+        <!-- Button trigger modal -->
+    </div>
+</section>
+<!-- Shopping Cart Section End -->
+
+<!--/col-3-->
+
+<div class="modal fade bd-example-modal-lg large-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="m-auto">
+                <h3>Select an address</h3>
+            </div>
+
+
+
+            <form id="form-addAddress" method="post" action="/add-default-address" class=" m-5">
+
+                {{#each addresses}}
+                <!-- 2 column grid layout with text inputs for the first and last names -->
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="addressId" value="{{this._id}}"
+                        id="flexRadioDefault1" required>
+
+
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        <p>
+                            {{this.name}} <br> {{this.email}} <br>{{this.address}} <br>{{this.pincode}}
+                        </p>
+                    </label>
+                </div>
+
+                {{/each}}
+
+
+                <!-- Message input -->
+                <button type="submit" class="primary-btn btn-lg btn-block">
+                    <h5 style="color: white;">select and Edit address</h5>
+                </button>
+
+
+            </form>
+
+
+
+
+
+
+
+
+        </div>
+    </div>
+</div>
+
+<script>
+    let errorSpan = document.getElementById('invalidCouponSpan')
+    let couponSpan = document.getElementById('couponmsgspan')
+    let removecpn = document.getElementById('removecpn')
+
+
+
+
+    function removeCoupon(id) {
+
+
+
+        swal({
+            title: "Are you sure? You want to remove the coupon from cart",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+
+
+
+                    $.ajax(
+                        {
+                            url: `/removecoupon/${id}`,
+
+                            method: "GET",
+                            success: (response) => {
+                                if (response.removed) {
+
+
+                                    swal("Poof! coupon removed from cart!", {
+                                        icon: "success",
+                                    }).then(
+                                        () => {
+                                            location.reload()
+                                        }
+                                    )
+
+
+
+
+                                }
+
+
+                            }
+                        }
+                    )
+                }
+            })
+    }
+
+
+
+
+
+    function invalidCoupon() {
+
+
+        errorSpan.innerText = null
+    }
+
+
+    $("#couponform").submit(function (e) {
+        console.log(e)
+        e.preventDefault()  // prevent actual form submit
+
+        //get submit url [replace url here if desired]
+        $.ajax({
+            url: `/apply-coupon/`,
+            method: 'post',
+            data: $('#couponform').serialize(),
+            success: function (response) {
+                if (response.invalidCoupon) {
+
+
+                    errorSpan.innerText = "invalid coupon"
+
+                }
+
+                if (response.couponused) {
+                    errorSpan.innerText = "already used this coupon"
+                }
+
+                if (response.coupon) {
+
+                    console.log(response.cart)
+
+
+                    location.href = "/cart"
+
+
+                    couponSpan.innerText = `coupon applied !! ₹ ${response.coupon.offer} offer added `
+
+                    /*swal("Offer added successfully!", "!", "success").then(
+                        () => {
+                            location.href = '/admin/category-offer'
+                        }
+                    ); */
+
+
+                } else {
+
+                    couponSpan.innerText = "Invalid coupon"
+                }
+
+
+
+
+
+
+            }
+        });
+    });
+</script>
+
+
+
+
+
+
+
+
+
+{{!***************************************** Table end *************************}}
+</div>
+
+</div>
+<!--/col-9-->
+</div>
+<!--/row-->
+
+
+
+{{!--
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
+
+
+--}}

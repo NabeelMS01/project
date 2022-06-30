@@ -1,0 +1,140 @@
+<hr>
+<div class="container bootstrap snippet">
+  <div class="row">
+    <div class="col-sm-10">
+      <h1></h1>
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="col-sm-2">
+      <!--left col-->
+
+
+      <div class="text-center">
+       {{#if userData.image}}
+      
+        <img style="width: 150px; " src="/uploads/{{userData.image}}" class="avatar img-circle img-thumbnail" >
+      {{else}}
+      <img style="width: 150px; " src="/images/proPic.png" class="avatar img-circle img-thumbnail" >
+      {{/if}}
+
+      </div>
+      </hr><br>
+
+
+
+
+
+      <ul class="list-group">
+        <li class="list-group-item text-muted"> Menu <i class="fa fa-dashboard fa-1x"></i></li>
+        <li class="list-group-item text-right"> <span class="pull-left"><strong> <a href="/orders"> Orders</a>
+            </strong></span> </li>
+        <li class="list-group-item text-right"><span class="pull-left"><strong><a href="/account-addresses"> Address</a>
+            </strong></span> </li>
+        <li class="list-group-item text-right"><span class="pull-left"><strong><a href="account-password-change">Change
+                Password </a> </strong></span> </li>
+        <li class="list-group-item text-right"><span class="pull-left"><strong><a href=""></a> </strong></span> </li>
+      </ul>
+
+      {{!-- <div class="panel panel-default">
+        <div class="panel-heading">Social Media</div>
+        <div class="panel-body">
+          <i class="fa fa-facebook fa-2x"></i> <i class="fa fa-github fa-2x"></i> <i class="fa fa-twitter fa-2x"></i> <i
+            class="fa fa-pinterest fa-2x"></i> <i class="fa fa-google-plus fa-2x"></i>
+        </div>
+      </div> --}}
+
+    </div>
+    <!--/col-3-->
+    <div class="col-sm-6">
+      <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#home">Profile</a></li>
+
+      </ul>
+
+
+      <div class="tab-content">
+        <div class="tab-pane active" id="home">
+
+          <form class="form">
+            <div class="form-group">
+
+              <div class="col-xs-6">
+                <label for="first_name">
+                  <h4>Name</h4>
+                </label>
+                <input type="text" class="form-control" name="first_name" id="first_name"
+                  placeholder="{{userData.name}}" disabled>
+              </div>
+            </div>
+
+
+
+            <div class="form-group">
+              <div class="col-xs-6">
+                <label for="mobile">
+                  <h4>Mobile</h4>
+                </label>
+                <input type="text" class="form-control" name="mobile" id="mobile" placeholder="{{userData.phone}}"
+                  disabled>
+              </div>
+            </div>
+            <div class="form-group">
+
+              <div class="col-xs-6">
+                <label for="email">
+                  <h4>Email</h4>
+                </label>
+                <input type="email" class="form-control" name="email" id="email" placeholder="{{userData.email}}"
+                  disabled>
+              </div>
+            </div>
+
+
+            {{!-- <div class="form-group">
+
+              <div class="col-xs-6">
+                <label for="password2">
+                  <h4>Verify</h4>
+                </label>
+                <input type="password" class="form-control" name="password2" id="password2" placeholder="password2"
+                  title="enter your password2.">
+              </div>
+            </div> --}}
+            <div>
+              <div class="col-xs-12">
+                <br>
+                <button onclick="location.href='/edit-profile'" type="button" class="btn btn-lg btn-success"> <i
+                    class="glyphicon glyphicon-ok-sign"></i> Edit Profile</button>
+
+              </div>
+            </div>
+          </form>
+
+
+
+          <!--/tab-pane-->
+
+
+        </div>
+        <!--/tab-content-->
+
+      </div>
+      <!--/col-9-->
+    </div>
+    <div class="col-sm-4">
+
+     
+      
+
+    </div>
+
+
+
+    <!--/row-->
+  </div>
+</div>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>

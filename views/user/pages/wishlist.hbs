@@ -1,0 +1,254 @@
+<section class="shopping-cart spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 m-auto">
+                {{#if products}}
+                <div class="shopping__cart__table">
+
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th></th>
+                                <th>Price</th>
+                                <th> </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+
+
+                            {{#each products }}
+                            <tr>
+
+                                <td class="product__cart__item">
+                                    <div class="product__cart__item__pic">
+                                        <img style="width: 80px;" src="/uploads/{{this.product_image.[0]}}" alt="">
+                                    </div>
+                                    <div class="product__cart__item__text">
+                                        <h6 style="cursor: pointer;"
+                                            onclick="location.href='/product-details/{{this.product_id}}'">
+                                            {{this.product_name}}</h6>
+
+                                    </div>
+                                </td>
+
+
+                                <td class="quantity__item">
+
+
+
+
+
+
+                                    <span id="{{this.product._id}}"> {{this.quantity}} </span>
+
+                                    {{#if this.product_offer_status}}
+                                <td class="cart__price"> ₹ {{this.product_offer_price}} </td>
+
+                                {{else}}
+                                <td class="cart__price"> ₹ {{this.product_price}} </td>
+                                {{/if}}
+
+
+                                <td class="cart__close"><i style="cursor: pointer ;"
+                                        onclick='removeProduct( "{{this._id}}" )' class="fa fa-close"></i></td>
+                            </tr>
+                            {{/each}}
+
+
+
+                        </tbody>
+                    </table>
+
+
+                </div>
+                {{else}}
+                <div>
+
+                    <h3 class="m-auto text-center">Your wishlist is empty</h3>
+                </div>
+                {{/if}}
+
+
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    {{!-- <div class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content m-auto r-0 ">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Available coupons</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Select Coupon</button>
+                </div>
+            </div>
+        </div>
+    </div> --}}
+
+
+
+
+
+    <div style="height: 200px;"></div>
+    </div>
+
+
+    <!-- Button trigger modal -->
+    </div>
+</section>
+<!-- Shopping Cart Section End -->
+
+<!--/col-3-->
+
+<div class="modal fade bd-example-modal-lg large-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="m-auto">
+                <h3>Select an address</h3>
+            </div>
+
+
+
+            <form id="form-addAddress" method="post" action="/add-default-address" class=" m-5">
+
+                {{#each addresses}}
+                <!-- 2 column grid layout with text inputs for the first and last names -->
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="addressId" value="{{this._id}}"
+                        id="flexRadioDefault1" required>
+
+
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        <p>
+                            {{this.name}} <br> {{this.email}} <br>{{this.address}} <br>{{this.pincode}}
+                        </p>
+                    </label>
+                </div>
+
+                {{/each}}
+
+
+                <!-- Message input -->
+                <button type="submit" class="primary-btn btn-lg btn-block">
+                    <h5 style="color: white;">select and Edit address</h5>
+                </button>
+
+
+            </form>
+
+
+
+
+
+
+
+
+        </div>
+    </div>
+</div>
+
+<script>
+    let errorSpan = document.getElementById('invalidCouponSpan')
+    let couponSpan = document.getElementById('couponmsgspan')
+    let removecpn = document.getElementById('removecpn')
+
+
+
+
+    function removeProduct(id) {
+
+
+
+        swal({
+            title: "Are you sure? You want to remove the product from wishlist",
+            icon: "warning",
+            buttons: true,
+
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+
+
+
+                    $.ajax(
+                        {
+                            url: `/removewishlist/${id}`,
+
+                            method: "GET",
+                            success: (response) => {
+                                if (response.proremoved) {
+
+
+                                    swal("Poof! product removed from wishlist!", {
+                                        icon: "success",
+                                        timer: 1100,
+                                        buttons: false,
+                                    }).then(
+                                        () => {
+                                            location.reload()
+                                        }
+                                    )
+
+
+
+
+                                }
+
+
+                            }
+                        }
+                    )
+                }
+            })
+    }
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+{{!***************************************** Table end *************************}}
+</div>
+
+</div>
+<!--/col-9-->
+</div>
+<!--/row-->
+
+
+
+{{!--
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
+
+
+--}}

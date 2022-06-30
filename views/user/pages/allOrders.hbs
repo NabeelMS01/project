@@ -1,0 +1,210 @@
+<hr />
+<div class="container bootstrap snippet" >
+
+  <div class="row">
+    <div class="col-sm-2">
+      <!--left col-->
+
+      <ul class="list-group">
+        <li class="list-group-item text-muted">
+          Menu
+          <i class="fa fa-dashboard fa-1x"></i>
+        </li>
+        <li class="list-group-item text-right">
+          <span class="pull-left"><strong>
+              <a href="/orders"> Orders</a>
+            </strong></span>
+        </li>
+        <li class="list-group-item text-right"><span class="pull-left"><strong><a href="/account-addresses"> Address</a>
+            </strong></span>
+        </li>
+        <li class="list-group-item text-right"><span class="pull-left"><strong><a href="account-password-change">Change
+                Password </a>
+            </strong></span>
+        </li>
+        <li class="list-group-item text-right"><span class="pull-left"><strong><a href=""></a> </strong></span>
+        </li>
+      </ul>
+
+      {{! <div class="panel panel-default">
+        <div class="panel-heading">Social Media</div>
+        <div class="panel-body">
+          <i class="fa fa-facebook fa-2x"></i> <i class="fa fa-github fa-2x"></i> <i class="fa fa-twitter fa-2x"></i> <i
+            class="fa fa-pinterest fa-2x"></i> <i class="fa fa-google-plus fa-2x"></i>
+        </div>
+      </div> }}
+
+
+
+
+
+
+
+    </div>
+    
+    <!--/col-3-->
+  
+
+     
+ <div class="col-md-10 ">
+            
+                <div class="shopping__cart__table">
+   {{#if orders}}
+      <!-- Basic Bootstrap Table -->
+    
+      <table>
+                        <thead>
+                            <tr>
+                                <th>Orders</th>
+                                <th></th>
+                                <th></th>
+                                <th> </th>
+                                  <th> </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                    
+
+                            {{#each orders }}
+                           
+                            <tr >
+
+                                <td class="product__cart__item"style="cursor: pointer;" onclick="location.href='/orders/{{this._id}}'" >
+                                    <div class="product__cart__item__pic">
+                                        <img style="width: 80px;" src="/uploads/{{this.product.images.[0]}}" alt="">
+                                    </div>
+                                    <div class="product__cart__item__text">
+                                        <h6>{{#each this.products}} <img style="width: 50px;" src="/uploads/{{this.product.images.[0]}}" alt=""> - {{this.product.name}} <br>    {{/each}} </h6>
+                                   
+                                    </div>
+                                </td>
+
+
+                                <td class="quantity__item">
+
+                                  
+                                </td>
+                                       <td class="cart__price">₹ {{this.totalAmount}}</span></td>
+                                <td class="cart__close"> <h4 style="color:rgb(248, 86, 10) ;font-weight: bold;" >  {{this.status}}</h4></td>
+                         
+                            </tr>
+                           
+                            {{/each}}
+
+           
+
+                        </tbody>
+                    </table>
+       
+      
+
+      {{/if}}
+                         
+                  
+                </div>
+              
+
+            </div>
+
+
+      {{!***************************************** Table end *************************}}
+ 
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <!--/col-9-->
+</div>
+<!--/row-->
+
+<script>
+
+
+  // $(document).ready(function () {
+  // $('.confirm_del').click(function (e) {
+
+
+  //})
+
+  //})
+
+
+
+
+
+
+
+  function cancelOrder(orderId) {
+
+
+
+
+    console.log(orderId)
+    swal({
+      title: "Are you sure? You want to cancel the order",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+
+
+          $.ajax(
+            {
+              url: `/cancel-order/${orderId}`,
+              method: 'get',
+
+              success: (response) => {
+
+                if (response.status) {
+
+                  swal("Poof! Your order has been canceled!", {
+                    icon: "success",
+
+
+
+                  });
+                  location.href = "/orders"
+                }
+              }
+            }
+          )
+
+
+
+
+
+
+        } else {
+          swal("Your order is not cancelled");
+        }
+      });
+
+
+
+
+
+
+    console.log(orderId)
+
+
+
+
+  }
+</script>
+
+
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>

@@ -1,0 +1,457 @@
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <h4>Check Out</h4>
+                    <div class="breadcrumb__links">
+                        <a href="./index.html">Home</a>
+                        <a href="./shop.html">Shop</a>
+                        <span>Check Out</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+<button id="selectad" type="button" class="primary-btn  ml-5 mt-5" data-toggle="modal"
+    data-target=".bd-example-modal-lg">Select Another
+    address</button>
+<!-- Checkout Section Begin -->
+<section class="checkout spad">
+
+    <div class="container">
+        <div class="checkout__form">
+            <form id="checkout-form">
+                <div class="row">
+                    <div class="col-lg-8 col-md-6">
+
+                        <h6 class="checkout__title">Billing Details</h6>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="checkout__input">
+                                    <p>Full Name<span>*</span><span id="nameSpan"></span></p>
+                                    <input onkeyup="return validName()" value="{{address.name}}" id="name" name="name"
+                                        type="text">
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="checkout__input">
+                            <p>Address<span>*</span><span id="addressSpan"></span></p>
+                            <input id="addresss" name="address" value="{{address.address}}"
+                                onkeyup="return validAddress()" type="text" placeholder="Street Address"
+                                class="checkout__input__add">
+
+                        </div>
+
+
+                        <div class="checkout__input">
+                            <p>Postcode / ZIP<span>*</span> <span id="pincodeSpan"></span></p>
+
+                            <input id="pincode" onkeyup="return validPincode()" name="pincode"
+                                value="{{address.pincode}}" type="number" placeholder="pincode">
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="checkout__input">
+                                    <p>Phone<span>*</span> <span id="phoneSpan"></span></p>
+                                    <input id="phone" onkeyup="return validPhone()" value="{{address.phone}}"
+                                        name="phone" type="number">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="checkout__input">
+                                    <p>Email<span>*</span><span id="emailSpan"></span></p>
+                                    <input id="email" onkeyup="return validEmail()" value="{{address.email}}"
+                                        name="email" type="email">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="checkout__input">
+                            <p>Order notes<span>*</span></p>
+                            <input id="ordernote" name="ordernote" type="text"
+                                placeholder="Notes about your order, e.g. special notes for delivery.">
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="checkout__order">
+                            <h4 class="order__title">Your order</h4>
+                            <div class="checkout__order__products"> <span>Total</span></div>
+
+                            <ul class="checkout__total__all">
+                                <li>Subtotal <span>₹ {{totalAmount}}</span></li>
+                                <li>Total<span> ₹ {{totalAmount}}</span></li>
+                            </ul>
+
+
+                            <div class="checkout__input__checkbox">
+                                <label>
+                                    COD
+                                    <input name="payment_method" type="radio" id="payment" value="cod" checked>
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div class="checkout__input__checkbox">
+                                <label>
+                                    Razorpay
+                                    <input name="payment_method" type="radio" value="razorpay">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div class="checkout__input__checkbox">
+                                <label>
+                                    Paypal
+                                    <input name="payment_method" type="radio" value="paypal">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+
+                            <input type="text" name="userId" id="" value="{{user._id}}" hidden>
+                            <button onclick="return validation()" type="submit" class="site-btn">PLACE ORDER</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+
+        {{#if addresses}}
+        <div class="modal-content">
+
+
+            <div class="m-auto">
+                <h3>Select an address</h3>
+            </div>
+
+
+            <form id="form-addAddress" method="post" action="/add-default-address" class=" m-5">
+
+                {{#each addresses}}
+                <!-- 2 column grid layout with text inputs for the first and last names -->
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="addressId" value="{{this._id}}"
+                        id="flexRadioDefault1" required>
+
+
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        <p>
+                            {{this.name}} <br> {{this.email}} <br>{{this.address}} <br>{{this.pincode}}
+                        </p>
+                    </label>
+                </div>
+
+                {{/each}}
+
+
+                <!-- Message input -->
+                <button type="submit" class="primary-btn btn-lg btn-block">
+                    Select
+                </button>
+
+
+            </form>
+            <h5 class="mb-5 ml-5"> Would you like to add an address? please <a class="text-primary"
+                    href="/account-addresses"> click here </a></h5>
+
+        </div>
+        {{else}}
+
+
+        <div class="modal-content">
+
+
+            <div class="m-auto">
+                <h3>Select an address</h3>
+            </div>
+
+            <div class="m-auto" style=" padding-top: 50px; height: 200px;">
+                <h5>You do not have any address saved. Would you like to add an address? please <a class="text-primary"
+                        href="/account-addresses"> click here </a></h5>
+            </div>
+
+
+
+        </div>
+
+
+        {{/if}}
+
+
+    </div>
+</div>
+
+
+
+<!-- Checkout Section End -->
+
+<!-- Footer Section Begin -->
+
+<!-- Footer Section End -->
+
+<!-- Search Begin -->
+<div class="search-model">
+    <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="search-close-switch">+</div>
+        <form class="search-model-form">
+            <input type="text" id="search-input" placeholder="Search here.....">
+        </form>
+    </div>
+</div>
+
+
+
+<script>
+
+
+
+
+    $("#checkout-form").submit(function (e) {
+        console.log(e)
+        e.preventDefault()  // prevent actual form submit
+
+        //get submit url [replace url here if desired]
+        $.ajax({
+            url: '/place-order',
+            method: 'post',
+            data: $('#checkout-form').serialize(),
+            success: function (response) {
+
+
+
+
+
+                if (response.codsuccess == true) {
+                    swal("Poof! order placed", {
+                        icon: "success",
+                        buttons: true,
+
+                    }).then(() => {
+
+                        location.href = '/'
+                    }
+                    );
+                } else
+                    if (response.paymentResponse) {
+
+
+                        razorpayPayment(response.paymentResponse, response.userData)
+
+                    } else {
+                        console.log(response)
+
+                        paypalPayment(response, response.body)
+
+                    }
+
+
+
+            }
+        });
+    });
+
+    function paypalPayment(data, body) {
+
+        console.log(data.response.links)
+        for (let i = 0; i < data.response.links.length; i++) {
+            if (data.response.links[i].rel === 'approval_url') {
+                // console.log(('approval_url'))
+                window.location.href = (data.response.links[i].href);
+                // let link=(data.links[i].href);
+            }
+        }
+    }
+
+    function razorpayPayment(order, userData) {
+
+
+
+        console.log(order.amount)
+        console.log('......................................')
+        var options = {
+            "key": "rzp_test_r82SUG9YhhYa4M", // Enter the Key ID generated from the Dashboard
+            "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "Parrot Fashion",
+            "description": "Test Transaction",
+            "image": "./img/logo.png",
+            "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "handler": function (response) {
+                //alert(response.razorpay_payment_id);
+                //  alert(response.razorpay_order_id);
+                //  alert(response.razorpay_signature)
+                verifyPayment(response, order)
+            },
+            "prefill": {
+                "name": userData.name,
+                "email": userData.email,
+                "contact": userData.phone,
+            },
+            "notes": {
+                "address": "Parrot fashion Corporate Office"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+
+    }
+
+    function verifyPayment(payment, order,) {
+
+        $.ajax({
+            method: "POST",
+            url: '/verify-payment',
+            data: {
+                payment,
+                order,
+            },
+            success: (response) => {
+
+                if (response.paymentstatus) {
+
+                    swal("Poof! order placed", {
+                        icon: "success",
+                        buttons: true,
+
+                    }).then(() => {
+
+                        location.href = '/orders'
+                    }
+                    );
+
+
+                } else if (!response.paymentstatus) {
+
+                    swal("Poof! order failed", {
+                        icon: "warning",
+                        buttons: true,
+
+                    }).then(() => {
+
+                        location.href = '/cart'
+                    }
+                    );
+                }
+
+
+
+            }
+
+        })
+
+    }
+
+
+
+
+</script>
+
+
+
+
+
+<script>
+
+
+    var errorEmail = document.getElementById('emailSpan')
+    var errorName = document.getElementById('nameSpan')
+    var errorAddress = document.getElementById('addressSpan')
+    var errorPhone = document.getElementById('phoneSpan')
+    var errorPincode = document.getElementById('pincodeSpan')
+
+
+
+
+
+    function validEmail() {
+        const name = document.getElementById('email').value
+        if (name == "") {
+            errorEmail.innerHTML = "enter you email address"
+            return false
+
+
+        }
+        if (!name.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+            errorEmail.innerHTML = 'enter a proper email adress'
+            return false
+        }
+
+        errorEmail.innerHTML = null
+        return true
+    }
+    function validAddress() {
+        const name = document.getElementById('addresss').value
+        if (name == "") {
+            errorAddress.innerHTML = "address cannot be empty"
+            return false
+        } else if (name.length < 5) {
+            errorAddress.innerHTML = "enter a valid address"
+            return false
+        }
+
+        errorAddress.innerHTML = null
+        return true
+    }
+    function validName() {
+        const name = document.getElementById('name').value
+        if (name == "") {
+            errorName.innerHTML = "name cannot be empty"
+            return false
+        } else if (name.length < 3) {
+            errorName.innerHTML = "enter a valid name"
+            return false
+        }
+
+        errorName.innerHTML = null
+        return true
+    }
+    function validPhone() {
+        const name = document.getElementById('phone').value
+        if (name == "") {
+            errorPhone.innerHTML = "phone number cannot be empty"
+            return false
+        } else if (name.length < 10) {
+            errorPhone.innerHTML = "enter a valid phone"
+            return false
+        }
+
+        errorPhone.innerHTML = null
+        return true
+    }
+    function validPincode() {
+        const name = document.getElementById('pincode').value
+        if (name == "") {
+            errorPincode.innerHTML = "pincode cannot be empty"
+            return false
+        } else if (name.length < 3) {
+            errorPincode.innerHTML = "enter a valid pin"
+            return false
+        }
+
+        errorPincode.innerHTML = null
+        return true
+    }
+
+    function validation() {
+        if (!validEmail() && !validAddress() && !validName() && !validPhone() && !validPincode()) {
+            return false
+        } else if (!validEmail() || !validAddress() || !validName() || !validPincode() || !validPhone()) {
+            return false
+        } else { return true }
+
+    }
+</script>

@@ -1,0 +1,252 @@
+<hr />
+<div class="container bootstrap snippet">
+
+  <div class="row">
+    <div class="col-sm-2">
+      <!--left col-->
+
+      <ul class="list-group">
+        <li class="list-group-item text-muted">
+          Menu
+          <i class="fa fa-dashboard fa-1x"></i>
+        </li>
+        <li class="list-group-item text-right">
+          <span class="pull-left"><strong>
+              <a href="/orders"> Orders</a>
+            </strong></span>
+        </li>
+        <li class="list-group-item text-right"><span class="pull-left"><strong><a href="/account-addresses">
+                Address</a>
+            </strong></span>
+        </li>
+        <li class="list-group-item text-right"><span class="pull-left"><strong><a href="account-password-change">Change
+                Password </a>
+            </strong></span>
+        </li>
+        <li class="list-group-item text-right"><span class="pull-left"><strong><a href=""></a> </strong></span>
+        </li>
+      </ul>
+
+      {{! <div class="panel panel-default">
+        <div class="panel-heading">Social Media</div>
+        <div class="panel-body">
+          <i class="fa fa-facebook fa-2x"></i> <i class="fa fa-github fa-2x"></i> <i class="fa fa-twitter fa-2x"></i> <i
+            class="fa fa-pinterest fa-2x"></i> <i class="fa fa-google-plus fa-2x"></i>
+        </div>
+      </div> }}
+
+    </div>
+
+    <!--/col-3-->
+
+    <div class="col-md-10">
+
+      <div class="shopping__cart__table">
+
+        <!-- Basic Bootstrap Table -->
+        <table>
+          <thead>
+            <tr>
+              <th>
+
+              </th>
+              <th>
+
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Orders</th>
+                      <th></th>
+                      <th> Price</th>
+                      <th> Qty</th>
+                      <th> </th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    {{#each orderDetails.products}}
+
+                    <tr>
+
+                      <td class="product__cart__item">
+                        <div class="product__cart__item__pic">
+                          <img style="width: 80px;" src="/uploads/{{this.product.images.[0]}}" class="m-auto" alt="" />
+                        </div>
+                        <div class="product__cart__item__text m-auto">
+                          <h6> {{this.product.name}} </h6>
+
+                        </div>
+                      </td>
+
+                      <td class="quantity__item">
+
+                      </td>
+                      <td class="cart__price">
+                        <h4> {{this.product.price}} </h4>
+                      </td>
+                      <td class="cart__close">
+                        <h4> {{this.quantity}} </h4>
+                      </td>
+
+                    </tr>
+
+                    {{/each}}
+
+                  </tbody>
+                </table>
+
+              </td>
+              <td>
+                <h4>Total Amount</h4>
+                <h4> : ₹ {{orderDetails.totalAmount}}</h4>
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+      <div class="shopping__cart__table">
+        {{#if cancelStatus}}
+        <div class="col-md-5">
+
+          <button type="button" onclick="cancelOrder('{{orderDetails._id}}')"
+            class="btn btn-success btn-lg btn-block" >
+            Cancel Order
+          </button>
+
+        </div>
+        {{/if}}
+        {{#if deliveryStatus}}
+   {{#if returnStatus}}
+
+        <div class="col-md-5">
+          <button type="button" onclick="returnOrder('{{orderDetails._id}}')" class="btn btn-primary btn-lg " >
+            Return Product
+          </button>
+        </div>
+  {{/if}}
+        
+        {{/if}}
+
+      </div>
+
+    </div>
+
+    {{!***************************************** Table end *************************}}
+
+  </div>
+  <!--/col-9-->
+</div>
+<!--/row-->
+
+<script>
+
+
+function cancelOrder(proId) {
+
+    console.log(proId)
+    swal({
+      title: "Are you sure? You want to cancel the order",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+
+
+          $.ajax(
+            {
+              url: `/cancel-order/${proId}`,
+              method: 'get',
+
+              success: (response) => {
+
+                if (response.status) {
+
+                  swal("Poof! Your order has been cancelled!", {
+                    icon: "success",
+                  }).then(
+( )=>{
+   location.reload()
+}
+
+
+                  )
+                 
+                }
+              }
+            }
+          )
+        } else {
+          swal("order is not cancelled");
+        }
+      });
+
+
+  }
+  ;
+  
+function returnOrder(proId) {
+
+    console.log(proId)
+    swal({
+      title: "Are you sure? You want to return the order",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+
+
+          $.ajax(
+            {
+              url: `/return-order/${proId}`,
+              method: 'get',
+
+              success: (response) => {
+
+                if (response.status) {
+
+                  swal("Poof! Your order return is placed !", {
+                    icon: "success",
+                  }).then(
+( )=>{
+   location.reload()
+}
+
+
+                  )
+                 
+                }
+              }
+            }
+          )
+        } else {
+          swal("return request cancelled");
+        }
+      });
+
+
+  }
+  ;
+
+
+</script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
