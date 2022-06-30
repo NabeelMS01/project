@@ -380,17 +380,13 @@ module.exports = {
   },
 
   getCartProducts: (userId) => {
-
-
-    console.log(userId);
-   
     return new Promise(async (resolve, reject) => {
       let cartItems = await db
         .get()
         .collection(collection.CART_COLLECTION)
         .aggregate([
           {
-            $match: { user: ObjectId(userId._id) },
+            $match: { user: ObjectId(userId) },
           },
           {
             $unwind: "$products",
@@ -861,8 +857,8 @@ module.exports = {
           payment_method: "paypal",
         },
         redirect_urls: {
-          return_url: `http://www.nabeelmampallil.com/success/${order.userId}?paymentMethod=${order.payment_method}&phone=${order.phone}`,
-          cancel_url: "http://www.nabeelmampallil.com/cart",
+          return_url: `http://localhost:3000/success/${order.userId}?paymentMethod=${order.payment_method}&phone=${order.phone}`,
+          cancel_url: "http://localhost:3000/cart",
         },
         transactions: [
           {
@@ -915,7 +911,7 @@ module.exports = {
         ],
       };
 
-    paypal.payment.execute(
+      paypal.payment.execute(
         paymentId,
         execute_payment_json,
         function (error, payment) {
