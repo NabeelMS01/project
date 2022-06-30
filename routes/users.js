@@ -436,7 +436,7 @@ router.get("/success/:id", async (req, res) => {
 console.log(req.params.id)
 
   req.session.userData = await userHelper.getUserData(req.params.id);
-let  totalPrice = await userHelper.getTotalAmount(req.session.userData);
+let  totalPrice = await userHelper.getTotalAmount(req.session.userData._id);
 
 
 req.session.totalPrice=totalPrice
