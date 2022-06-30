@@ -375,7 +375,7 @@ router.post("/place-order", verifyLogin, async (req, res) => {
   // console.log(req.body);
   req.session.orderdata = req.body;
   let orderId = rn(options);
-  let products = await userHelper.getCartProducts(req.session.userData);
+  let products = await userHelper.getCartProducts(req.session.user);
   let totalPrice = await userHelper.getTotalAmount(req.session.user._id);
   req.session.totalPrice = totalPrice;
   let userData = await userHelper.getUserData(req.session.user._id);
