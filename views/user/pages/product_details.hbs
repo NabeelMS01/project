@@ -48,19 +48,29 @@
                                     <img  id="featuredimg" src="/uploads/{{product.images.[0]}}" alt="" />
  
                                 </div> --}}
-               
+               <style>
+
+
+
+    @media only screen and (max-width: 760px) {
+  #lens {
+    display: none;
+  }
+}
+
+
+               </style>
                
 	<div id="content-wrapper">
 
-		<div class="column">
+		<div class="column ">
 			<div id="img-container">
-				<div id="lens"></div>
-				<img id=featured src="/uploads/{{product.images.[0]}}" >
+				<div  id="lens"></div>
+				<img class="container" id=featured  src="/uploads/{{product.images.[0]}}" >
 			</div>
 			
 		</div>
 
-	
 
 	</div>
 
