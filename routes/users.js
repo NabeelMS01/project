@@ -95,9 +95,9 @@ router.post("/login", (req, res) => {
           if (response.userstatus) {
             req.session.loggedIn = true;
             let user = await userHelper.getPhone(req.body.email);
-            console.log("*********************");
-            console.log(user.phone);
-            console.log("******88888888888***************");
+         
+       
+       
             let number = parseInt(user.phone);
             req.session.phone = number;
 
@@ -153,7 +153,7 @@ router.post("/signup", (req, res) => {
       req.session.phone = req.body.phone;
       req.session.userData = req.body;
 
-      // console.log(user.number);
+
       req.session.loggedin = true;
       req.session.user = response.user;
 
@@ -181,11 +181,9 @@ router.get("/otp-varify", (req, res) => {
 
 router.post("/verify-otp-login", (req, res) => {
   var otp = req.body.otp;
-  console.log(otp);
-  console.log("9999999999999999999999999");
+
   let number = req.session.phone;
-  console.log(number);
-  console.log("99999999999955555555555555555555555559999999999999");
+
   client.verify
     .services(config.serviceSID)
     .verificationChecks.create({
@@ -206,11 +204,9 @@ router.post("/verify-otp-login", (req, res) => {
 
 router.post("/verify-otp", (req, res) => {
   var otp = req.body.otp;
-  console.log(otp);
-  console.log("9999999999999999999999999");
+
   let number = req.session.phone;
-  console.log(number);
-  console.log("99999999999955555555555555555555555559999999999999");
+
   client.verify
     .services(config.serviceSID)
     .verificationChecks.create({
@@ -290,8 +286,7 @@ router.get("/cart", verifyLogin, async (req, res) => {
 
 router.post("/applycodetocart", (req, res) => {
   req.session.coupondata = req.body.coupon_code;
-  console.log(req.body);
-  console.log("///////////////////");
+
 
   res.redirect("/cart");
 });
@@ -308,7 +303,7 @@ router.get("/add-to-cart/:id", async (req, res) => {
       product.price = product.offer_price;
     }
 
-    console.log(product);
+  
 
     userHelper.addToCart(uid, userid, product).then(() => {
       res.json({ status: true });
@@ -319,7 +314,7 @@ router.get("/add-to-cart/:id", async (req, res) => {
 //---------------cart product increment decrement------------------
 
 router.post("/change-product-quantity", async (req, res) => {
-  console.log(req.body);
+
 
   userHelper.changeProductQuantity(req.body).then(async (response) => {
     response.totalAmount = await userHelper.getTotalAmount(req.body.user);
@@ -327,8 +322,8 @@ router.post("/change-product-quantity", async (req, res) => {
       req.session.user._id
     );
 
-    // console.log(response);
-    console.log(response);
+
+
     res.json(response);
   });
 });
@@ -341,9 +336,9 @@ router.post("/remove-cart-product", (req, res) => {
 //---------------add-default-address------------------
 
 router.post("/add-default-address", (req, res) => {
-  console.log(req.body);
+
   userHelper.getDefaultAddress(req.body.addressId).then(async (response) => {
-    console.log(response);
+
 
     req.session.selectAddress = await response;
     res.redirect("/place-order");
@@ -438,13 +433,17 @@ router.post("/place-order", verifyLogin, async (req, res) => {
 });
 
 router.get("/success/:id", async (req, res) => {
+
+
   req.session.userData = await userHelper.getUserData(req.session.user._id);
+
+  console.log(req.session.userData);
+console.log("ivide error");
   let payerId = req.query.PayerID;
   let paymentId = req.query.paymentId;
   let total = req.session.totalPrice;
   let data = req.session.orderdata;
-console.log(req.session.userData);
-console.log("ivide error");
+
   let products = await userHelper.getCartProducts(req.session.userData);
 
   userHelper.verifypaypal(payerId, paymentId, total).then((response) => {
@@ -465,9 +464,9 @@ console.log("ivide error");
 router.post("/verify-payment", async (req, res) => {
   req.session.userData = await userHelper.getUserData(req.session.user._id);
   let products = await userHelper.getCartProducts(req.session.userData);
-  console.log(products);
+
   let totalPrice = await userHelper.getTotalAmount(req.session.userData);
-  console.log("/////////////////");
+
 
   await userHelper
     .verifyPayment(req.body)
@@ -492,7 +491,7 @@ router.post("/verify-payment", async (req, res) => {
 
 //------------------------user  account ---------------------------
 router.get("/account", verifyLogin, async (req, res) => {
-  console.log(req.session.userData);
+
   let userData = await userHelper.getUserData(req.session.user._id);
   res.render("user/pages/profile", {
     userUi: true,
@@ -508,7 +507,7 @@ router.get("/account", verifyLogin, async (req, res) => {
   router.get("/account-addresses", verifyLogin, async (req, res) => {
     let address = await userHelper.getAddress(req.session.userData._id);
 
-    console.log(address);
+
     res.render("user/pages/account_addresses", {
       userUi: true,
       category: req.session.category,
@@ -521,7 +520,7 @@ router.get("/account", verifyLogin, async (req, res) => {
   });
 
 router.post("/add-address", async (req, res) => {
-  console.log(req.session.userData);
+
   let userId = req.session.userData._id;
 
   await userHelper
@@ -529,23 +528,20 @@ router.post("/add-address", async (req, res) => {
     .then(res.json({ status: true }));
 }),
   router.get("/deleteAddress/:id", (req, res) => {
-    console.log(req.params.id);
-    console.log("++++++++++++++++++++++");
+
     userHelper.deleteAddress(req.params.id).then((response) => {
       res.json({ status: true });
     });
   }),
   router.post("/edit-address/:id", (req, res) => {
-    console.log(req.body);
-    console.log(req.params.id);
-    console.log("++++++++++++++++++++++");
+ 
     userHelper.updateAddress(req.params.id, req.body).then((response) => {
       res.redirect("/account-addresses");
     });
   }),
   //------------------------edit-profile-----------------------------
   router.get("/edit-profile", verifyLogin, async (req, res) => {
-    console.log(req.session.userData);
+
 
     let userData = await userHelper.getUserData(req.session.user._id);
 
@@ -560,19 +556,18 @@ router.post("/add-address", async (req, res) => {
   });
 
 router.post("/edit-profile", upload.array("proImage"), (req, res, next) => {
-  console.log(req.files);
-  console.log(req.body);
+
   let proimg = {};
 
   req.files.forEach(function (files, index, ar) {
-    console.log(req.files[index].filename);
+
 
     proimg.image = req.files[index].filename;
   });
-  console.log(proimg);
+
 
   let userId = req.session.userData._id;
-  console.log(userId);
+
 
   userHelper.editProfile(req.body, proimg, userId).then(() => {
     req.session.submit = true;
@@ -585,8 +580,7 @@ router.post("/edit-profile", upload.array("proImage"), (req, res, next) => {
 router.get("/shop-by-category/:id", async (req, res) => {
   let products = await userHelper.getProductByCategory(req.params.id);
   // let categoryname= await userHelper.getCategoryName(req.params.id)
-  console.log(products);
-  console.log("heres ");
+
   res.render("user/pages/shop", {
     userUi: true,
     category: req.session.category,
@@ -615,8 +609,7 @@ router.get("/account-password-change", verifyLogin, async (req, res) => {
 
 router.post("/account-password-change", async (req, res) => {
   console.log(req.body);
-  req.session.body = req.body;
-  console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+
   let userData = await userHelper.getUserData(req.session.user._id);
 
   await userHelper
@@ -646,9 +639,7 @@ router.post("/account-password-change", async (req, res) => {
 
 router.get("/orders", verifyLogin, async (req, res) => {
   let orders = await userHelper.getOrderByUser(req.session.user);
-  console.log("-----------------------");
-  console.log(orders);
-  console.log("-----------------------");
+
   res.render("user/pages/allOrders", {
     userUi: true,
     category: req.session.category,
@@ -687,23 +678,23 @@ router.get("/orders/:id", async (req, res) => {
 });
 
 router.get("/cancel-order/:id", (req, res) => {
-  console.log(req.params.id);
+
   userHelper.cancelOrder(req.params.id).then(res.json({ status: true }));
 });
 router.get("/return-order/:id", (req, res) => {
-  console.log(req.params.id);
+
   userHelper.returnOrder(req.params.id).then(res.json({ status: true }));
 });
 
 router.get("/ship-order/:id", (req, res) => {
-  console.log(req.params.id);
+
   userHelper.shipOrder(req.params.id).then(res.json({ status: true }));
 });
 
 router.get("/collection/:id", async (req, res) => {
   try {
     let products = await userHelper.getProductByCollection(req.params.id);
-    console.log(products[0]);
+
     if (!products || products[0] == null) {
       res.redirect("/productnotfound");
     }
@@ -806,7 +797,6 @@ res.render('user/pages/wishlist',{
 })
 
 
-console.log(wishlist);
 
 
 
