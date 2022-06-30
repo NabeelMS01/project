@@ -434,11 +434,11 @@ router.post("/place-order", verifyLogin, async (req, res) => {
 
 router.get("/success/:id", async (req, res) => {
 console.log(req.params.id)
-   console.log(req.session.user);
+ 
+  req.session.userData = await userHelper.getUserData(req.params.id);
+  console.log(req.session.user);
   console.log(req.session.userData);
   console.log("ivide error");
-
-  req.session.userData = await userHelper.getUserData(req.session.user._id);
 
   console.log(req.session.userData);
 console.log("ivide error");
