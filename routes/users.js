@@ -475,7 +475,7 @@ router.post("/verify-payment", async (req, res) => {
   req.session.userData = await userHelper.getUserData(req.session.user._id);
   let products = await userHelper.getCartProducts(req.session.userData);
 
-  let totalPrice = await userHelper.getTotalAmount(req.session.userData);
+  let totalPrice = await userHelper.getTotalAmount(req.session.user._id);
 
 
   await userHelper
