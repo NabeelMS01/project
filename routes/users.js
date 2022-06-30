@@ -463,6 +463,7 @@ console.log("ivide error");
 });
 
 router.post("/verify-payment", async (req, res) => {
+  req.session.userData = await userHelper.getUserData(req.session.user._id);
   let products = await userHelper.getCartProducts(req.session.userData);
   console.log(products);
   let totalPrice = await userHelper.getTotalAmount(req.session.userData);
