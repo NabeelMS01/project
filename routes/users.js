@@ -436,12 +436,9 @@ router.get("/success/:id", async (req, res) => {
 console.log(req.params.id)
  
   req.session.userData = await userHelper.getUserData(req.params.id);
-  console.log(req.session.user);
-  console.log(req.session.userData);
-  console.log("ivide error");
+console.log(req.body);
 
-  console.log(req.session.userData);
-console.log("ivide error");
+
   let payerId = req.query.PayerID;
   let paymentId = req.query.paymentId;
   let total = req.session.totalPrice;

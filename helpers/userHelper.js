@@ -380,7 +380,7 @@ module.exports = {
   },
 
   getCartProducts: (userId) => {
-    
+
 
     console.log(userId);
     console.log("here is error");
@@ -915,7 +915,7 @@ module.exports = {
         ],
       };
 
-      paypal.payment.execute(
+    paypal.payment.execute(
         paymentId,
         execute_payment_json,
         function (error, payment) {
