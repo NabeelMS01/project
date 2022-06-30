@@ -48,7 +48,7 @@ router.get("/", async function (req, res, next) {
   if (req.session.user) {
     cartCount = await userHelper.getCartCount(req.session.user._id);
     req.session.cartCount = cartCount;
-    req.session.userData = await userHelper.getUserData(req.session.user._id);
+    req.session.userData = await userHelper.getUserData(req.session.user);
   }
   try {
     await userHelper.validateOffer();
@@ -262,7 +262,7 @@ router.get("/product-details/:id", (req, res) => {
 router.get("/cart", verifyLogin, async (req, res) => {
   // adminHelper.getAllCategory().then((category) => {
   cartCount = await userHelper.getCartCount(req.session.user._id);
-  let products = await userHelper.getCartProducts(req.session.userData);
+  let products = await userHelper.getCartProducts(req.session.user);
   let totalAmount = await userHelper.getTotalAmount(req.session.user._id);
   let addresses = await userHelper.getAddress(req.session.user._id);
   let cart = await userHelper.getCartByUser(req.session.user._id);
