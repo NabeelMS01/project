@@ -381,7 +381,7 @@ module.exports = {
 
   getCartProducts: (userId) => {
 
-    console.log(userId._id);
+    console.log(userId);
     console.log("here is error");
     return new Promise(async (resolve, reject) => {
       let cartItems = await db
