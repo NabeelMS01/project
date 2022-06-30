@@ -111,7 +111,7 @@ router.post("/login", (req, res) => {
             //       res.render("user/auth/loginOtpVerify", { userUi: false, number });
 
             //     });
-
+  
             res.redirect("/");
           } else {
             req.flash.loginErr = "your Account is Blocked";
@@ -261,6 +261,7 @@ router.get("/product-details/:id", (req, res) => {
 
 router.get("/cart", verifyLogin, async (req, res) => {
   // adminHelper.getAllCategory().then((category) => {
+    req.session.userData = await userHelper.getUserData(req.session.user._id);
   cartCount = await userHelper.getCartCount(req.session.user._id);
   let products = await userHelper.getCartProducts(req.session.userData);
   let totalAmount = await userHelper.getTotalAmount(req.session.user._id);
@@ -373,6 +374,7 @@ router.get("/place-order", verifyLogin, async (req, res) => {
 
 router.post("/place-order", verifyLogin, async (req, res) => {
   // console.log(req.body);
+  req.session.userData = await userHelper.getUserData(req.session.user._id);
   req.session.orderdata = req.body;
   let orderId = rn(options);
   let products = await userHelper.getCartProducts(req.session.userData);
@@ -436,11 +438,13 @@ router.post("/place-order", verifyLogin, async (req, res) => {
 });
 
 router.get("/success/:id", async (req, res) => {
+  req.session.userData = await userHelper.getUserData(req.session.user._id);
   let payerId = req.query.PayerID;
   let paymentId = req.query.paymentId;
   let total = req.session.totalPrice;
   let data = req.session.orderdata;
 console.log(req.session.userData);
+console.log("ivide error");
   let products = await userHelper.getCartProducts(req.session.userData);
 
   userHelper.verifypaypal(payerId, paymentId, total).then((response) => {
