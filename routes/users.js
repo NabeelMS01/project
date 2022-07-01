@@ -44,6 +44,7 @@ const loggedInCheck = (req, res, next) => {
 /* GET users listing. */
 
 router.get("/", async function (req, res, next) {
+  
   let cartCount = 0;
   if (req.session.user) {
     cartCount = await userHelper.getCartCount(req.session.user._id);
@@ -77,12 +78,16 @@ router.get("/", async function (req, res, next) {
 //login user
 
 router.get("/login", function (req, res, next) {
+  try{
   if (req.session.loggedIn) {
     res.redirect("/");
   }
 
   res.render("user/auth/login", { loginErr: req.flash.loginErr });
   req.flash.loginErr = null;
+}catch(err){
+  req.redirect('/error404')
+}
 });
 
 router.post("/login", (req, res) => {
@@ -137,12 +142,16 @@ router.get("/logout", (req, res) => {
 });
 
 router.get("/signup", function (req, res, next) {
+  try{
   if (req.session.loggedIn) {
     res.redirect("/");
   } else {
     res.render("user/auth/signup", { signupErr: req.flash.signupError });
     req.flash.signupError = "";
   }
+}catch(err){
+  req.redirect('/error404')
+}
 });
 
 router.post("/signup", (req, res) => {
@@ -185,6 +194,7 @@ router.get("/otp-varify", (req, res) => {
 });
 
 router.post("/verify-otp-login", (req, res) => {
+  try{
   var otp = req.body.otp;
 
   let number = req.session.phone;
@@ -205,9 +215,13 @@ router.post("/verify-otp-login", (req, res) => {
         res.redirect("/otp-varify");
       }
     });
+  }catch(err){
+    req.redirect('/error404')
+  }
 });
 
 router.post("/verify-otp", (req, res) => {
+  try{
   var otp = req.body.otp;
 
   let number = req.session.phone;
@@ -229,6 +243,9 @@ router.post("/verify-otp", (req, res) => {
         res.render("user/auth/otp-verify", { otpErr, number });
       }
     });
+  }catch(err){
+    req.redirect('/error404')
+  }
 });
 
 router.get("/verify-otp", function (req, res, next) {
@@ -238,6 +255,7 @@ router.get("/verify-otp", function (req, res, next) {
 //----------------Product details------------------------
 
 router.get("/product-details/:id", (req, res) => {
+  try{
   var id = req.params.id;
 
   adminHelper.getProductDetails(id).then((product) => {
@@ -256,11 +274,15 @@ router.get("/product-details/:id", (req, res) => {
 
     // });
   });
+}catch(err){
+  req.redirect('/error404')
+}
 });
 
 //---------------------Cart-----------------------
 
 router.get("/cart", verifyLogin, async (req, res) => {
+  try{
   // adminHelper.getAllCategory().then((category) => {
   req.session.userData = await userHelper.getUserData(req.session.user._id);
   cartCount = await userHelper.getCartCount(req.session.user._id);
@@ -287,6 +309,9 @@ router.get("/cart", verifyLogin, async (req, res) => {
   });
   // req.session.coupondata = null;
   // req.session.couponmsg=null
+}catch(err){
+  req.redirect('/error404')
+}
 });
 
 router.post("/applycodetocart", (req, res) => {
@@ -296,6 +321,7 @@ router.post("/applycodetocart", (req, res) => {
 });
 
 router.get("/add-to-cart/:id", async (req, res) => {
+  try{
   if (!req.session.loggedIn) {
     res.json({ loggedinstatus: true });
   } else {
@@ -311,11 +337,15 @@ router.get("/add-to-cart/:id", async (req, res) => {
       res.json({ status: true });
     });
   }
+}catch(err){
+  req.redirect('/error404')
+}
 });
 
 //---------------cart product increment decrement------------------
 
 router.post("/change-product-quantity", async (req, res) => {
+  try{
   userHelper.changeProductQuantity(req.body).then(async (response) => {
     response.totalAmount = await userHelper.getTotalAmount(req.body.user);
     response.cartProductTotal = await userHelper.getCartProductTotal(
@@ -324,6 +354,9 @@ router.post("/change-product-quantity", async (req, res) => {
 
     res.json(response);
   });
+}catch(err){
+  req.redirect('/error404')
+}
 });
 router.post("/remove-cart-product", (req, res) => {
   userHelper.removeCartProduct(req.body).then((response) => {
@@ -334,15 +367,20 @@ router.post("/remove-cart-product", (req, res) => {
 //---------------add-default-address------------------
 
 router.post("/add-default-address", (req, res) => {
+  try{
   userHelper.getDefaultAddress(req.body.addressId).then(async (response) => {
     req.session.selectAddress = await response;
     res.redirect("/place-order");
   });
+}catch(err){
+  req.redirect('/error404')
+}
 });
 
 //------------------------place-order-----------------------------
 
 router.get("/place-order", verifyLogin, async (req, res) => {
+  try{
   if (!req.session.loggedIn) {
     res.redirect("/");
   }
@@ -360,9 +398,13 @@ router.get("/place-order", verifyLogin, async (req, res) => {
     addresses,
     address: req.session.selectAddress,
   });
+}catch(err){
+  req.redirect('/error404')
+}
 });
 
 router.post("/place-order", verifyLogin, async (req, res) => {
+  try{
   // console.log(req.body);
   req.session.userData = await userHelper.getUserData(req.session.user._id);
   req.session.orderdata = req.body;
@@ -425,9 +467,13 @@ router.post("/place-order", verifyLogin, async (req, res) => {
         res.json({ response });
       });
   }
+}catch(err){
+  req.redirect('/error404')
+}
 });
 
 router.get("/success/:id", async (req, res) => {
+  try{
   req.session.userData = await userHelper.getUserData(req.params.id);
 
   let totalPrice = await userHelper.getTotalAmount(req.session.userData._id);
@@ -458,9 +504,13 @@ router.get("/success/:id", async (req, res) => {
         res.redirect("/orders");
       });
   });
+}catch(err){
+  req.redirect('/error404')
+}
 });
 
 router.post("/verify-payment", async (req, res) => {
+  try{
   req.session.userData = await userHelper.getUserData(req.session.user._id);
   let products = await userHelper.getCartProducts(req.session.userData);
 
@@ -485,10 +535,14 @@ router.post("/verify-payment", async (req, res) => {
     .catch((err) => {
       res.json({ paymentstatus: false });
     });
+  }catch(err){
+    req.redirect('/error404')
+  }
 });
 
 //------------------------user  account ---------------------------
 router.get("/account", verifyLogin, async (req, res) => {
+  try{
   let userData = await userHelper.getUserData(req.session.user._id);
   res.render("user/pages/profile", {
     userUi: true,
@@ -498,10 +552,14 @@ router.get("/account", verifyLogin, async (req, res) => {
     userData: userData,
     user: req.session.user,
   });
+}catch(err){
+  req.redirect('/error404')
+}
 }),
   //-----------------addresses-------------------
 
   router.get("/account-addresses", verifyLogin, async (req, res) => {
+    try{
     let address = await userHelper.getAddress(req.session.userData._id);
 
     res.render("user/pages/account_addresses", {
@@ -513,27 +571,43 @@ router.get("/account", verifyLogin, async (req, res) => {
       user: req.session.user,
       address,
     });
+  }catch(err){
+    req.redirect('/error404')
+  }
   });
 
 router.post("/add-address", async (req, res) => {
+  try{
   let userId = req.session.userData._id;
 
   await userHelper
     .addNewAddress(req.body, userId)
     .then(res.json({ status: true }));
+  }catch(err){
+    req.redirect('/error404')
+  }
 }),
   router.get("/deleteAddress/:id", (req, res) => {
+    try{
     userHelper.deleteAddress(req.params.id).then((response) => {
       res.json({ status: true });
     });
+  }catch(err){
+    req.redirect('/error404')
+  }
   }),
   router.post("/edit-address/:id", (req, res) => {
+    try{
     userHelper.updateAddress(req.params.id, req.body).then((response) => {
       res.redirect("/account-addresses");
     });
+  }catch(err){
+    req.redirect('/error404')
+  }
   }),
   //------------------------edit-profile-----------------------------
   router.get("/edit-profile", verifyLogin, async (req, res) => {
+    try{
     let userData = await userHelper.getUserData(req.session.user._id);
 
     res.render("user/pages/edit-profile", {
@@ -544,9 +618,13 @@ router.post("/add-address", async (req, res) => {
       userData: userData,
       user: req.session.user,
     });
+  }catch(err){
+    req.redirect('/error404')
+  }
   });
 
 router.post("/edit-profile", upload.array("proImage"), (req, res, next) => {
+  try{
   let proimg = {};
 
   req.files.forEach(function (files, index, ar) {
@@ -559,11 +637,15 @@ router.post("/edit-profile", upload.array("proImage"), (req, res, next) => {
     req.session.submit = true;
     res.redirect("/account");
   });
+}catch(err){
+  req.redirect('/error404')
+}
 });
 
 //------------------------Shop products-----------------------------
 
 router.get("/shop-by-category/:id", async (req, res) => {
+  try{
   let products = await userHelper.getProductByCategory(req.params.id);
   // let categoryname= await userHelper.getCategoryName(req.params.id)
 
@@ -576,10 +658,14 @@ router.get("/shop-by-category/:id", async (req, res) => {
     products,
     // categoryname
   });
+}catch(err){
+  req.redirect('/error404')
+}
 });
 
 //---------------account password change--------
 router.get("/account-password-change", verifyLogin, async (req, res) => {
+  try{
   let userData = await userHelper.getUserData(req.session.user._id);
 
   res.render("user/pages/changePassword", {
@@ -591,9 +677,13 @@ router.get("/account-password-change", verifyLogin, async (req, res) => {
 
     user: req.session.user,
   });
+}catch(err){
+  req.redirect('/error404')
+}
 });
 
 router.post("/account-password-change", async (req, res) => {
+  try{
   console.log(req.body);
 
   let userData = await userHelper.getUserData(req.session.user._id);
@@ -621,9 +711,13 @@ router.post("/account-password-change", async (req, res) => {
   //   logedIn: req.session.loggedIn,
 
   //   user: req.session.user,})
+}catch(err){
+  req.redirect('/error404')
+}
 });
 
 router.get("/orders", verifyLogin, async (req, res) => {
+  try{
   let orders = await userHelper.getOrderByUser(req.session.user);
 
   res.render("user/pages/allOrders", {
@@ -634,9 +728,13 @@ router.get("/orders", verifyLogin, async (req, res) => {
     user: req.session.user,
     orders,
   });
+}catch(err){
+  req.redirect('/error404')
+}
 });
 
 router.get("/orders/:id", async (req, res) => {
+  try{
   let orderDetails = await userHelper.getOrderDetails(req.params.id);
   let deliveryStatus = false;
   let cancelStatus = true;
@@ -661,6 +759,9 @@ router.get("/orders/:id", async (req, res) => {
     cancelStatus,
     returnStatus,
   });
+}catch(err){
+  req.redirect('/error404')
+}
 });
 
 router.get("/cancel-order/:id", (req, res) => {
@@ -675,6 +776,7 @@ router.get("/ship-order/:id", (req, res) => {
 });
 
 router.get("/collection/:id", async (req, res) => {
+
   try {
     let products = await userHelper.getProductByCollection(req.params.id);
 
@@ -741,6 +843,7 @@ router.get("/removecoupon/:id", async (req, res) => {
 });
 
 router.get("/add-to-wishlist/:id", async (req, res) => {
+  try{
   if (!req.session.user) {
     res.json({ userloggedin: false });
   }
@@ -759,11 +862,15 @@ router.get("/add-to-wishlist/:id", async (req, res) => {
       });
   }
   console.log(req.params.id);
+}catch(err){
+  req.redirect('/error404')
+}
 });
 
 //-------------wish list ---------------------
 
 router.get("/wishlist", verifyLogin, async (req, res) => {
+  try{
   let wishlist = await userHelper.getwishlist(req.session.user);
 
   res.render("user/pages/wishlist", {
@@ -773,6 +880,9 @@ router.get("/wishlist", verifyLogin, async (req, res) => {
     cartCount: req.session.cartCount,
     products: wishlist,
   });
+}catch(err){
+  req.redirect('/error404')
+}
 });
 
 router.get("/removewishlist/:id", async (req, res) => {
