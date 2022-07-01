@@ -4,7 +4,16 @@
         <div class="loader"></div>
     </div>
 
-
+<style>
+    
+    @media only screen and (max-width: 760px) {
+#proimg{
+    
+  min-height: 500px;
+  min-width: : 200px;
+}
+}
+</style>
     <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-option">
         <div class="container">
@@ -215,7 +224,7 @@
             <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
 
                 <div class="product__item">
-                    <div onclick="location.href='/product-details/{{this._id}}';" class="product__item__pic set-bg"
+                    <div id="proimg" onclick="location.href='/product-details/{{this._id}}';" class="product__item__pic set-bg"
                         data-setbg="/uploads/{{this.images.[0]}}" >
                         <span style="background-color: darkorange;" class="label" >New</span>
                         <ul class="product__hover">
