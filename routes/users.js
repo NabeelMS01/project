@@ -86,6 +86,7 @@ router.get("/login", function (req, res, next) {
 });
 
 router.post("/login", (req, res) => {
+  try{
   if (req.body.email && req.body.password) {
     userHelper.doLogin(req.body).then((response) => {
       req.session.user = response.user;
@@ -95,9 +96,7 @@ router.post("/login", (req, res) => {
           if (response.userstatus) {
             req.session.loggedIn = true;
             let user = await userHelper.getPhone(req.body.email);
-         
-       
-       
+
             let number = parseInt(user.phone);
             req.session.phone = number;
 
@@ -111,7 +110,7 @@ router.post("/login", (req, res) => {
             //       res.render("user/auth/loginOtpVerify", { userUi: false, number });
 
             //     });
-  
+
             res.redirect("/");
           } else {
             req.flash.loginErr = "your Account is Blocked";
@@ -124,6 +123,10 @@ router.post("/login", (req, res) => {
         res.redirect("/login");
       }
     });
+  }}catch(err){
+
+res.redirect('/eror404')
+
   }
 });
 
@@ -143,6 +146,7 @@ router.get("/signup", function (req, res, next) {
 });
 
 router.post("/signup", (req, res) => {
+  try {
   userHelper.signUpCheck(req.body).then((response) => {
     if (response.status) {
       req.flash.signupError = "Account already exist";
@@ -152,7 +156,6 @@ router.post("/signup", (req, res) => {
       var number = req.body.phone;
       req.session.phone = req.body.phone;
       req.session.userData = req.body;
-
 
       req.session.loggedin = true;
       req.session.user = response.user;
@@ -168,7 +171,9 @@ router.post("/signup", (req, res) => {
           res.redirect("/otp-varify");
         });
     }
-  });
+  });}catch(err){
+    res.redirect('error404')
+  }
 });
 //------------------------OTP VErification------------------------------
 router.get("/otp-varify", (req, res) => {
@@ -257,7 +262,7 @@ router.get("/product-details/:id", (req, res) => {
 
 router.get("/cart", verifyLogin, async (req, res) => {
   // adminHelper.getAllCategory().then((category) => {
-    req.session.userData = await userHelper.getUserData(req.session.user._id);
+  req.session.userData = await userHelper.getUserData(req.session.user._id);
   cartCount = await userHelper.getCartCount(req.session.user._id);
   let products = await userHelper.getCartProducts(req.session.userData);
   let totalAmount = await userHelper.getTotalAmount(req.session.user._id);
@@ -287,7 +292,6 @@ router.get("/cart", verifyLogin, async (req, res) => {
 router.post("/applycodetocart", (req, res) => {
   req.session.coupondata = req.body.coupon_code;
 
-
   res.redirect("/cart");
 });
 
@@ -303,8 +307,6 @@ router.get("/add-to-cart/:id", async (req, res) => {
       product.price = product.offer_price;
     }
 
-  
-
     userHelper.addToCart(uid, userid, product).then(() => {
       res.json({ status: true });
     });
@@ -314,15 +316,11 @@ router.get("/add-to-cart/:id", async (req, res) => {
 //---------------cart product increment decrement------------------
 
 router.post("/change-product-quantity", async (req, res) => {
-
-
   userHelper.changeProductQuantity(req.body).then(async (response) => {
     response.totalAmount = await userHelper.getTotalAmount(req.body.user);
     response.cartProductTotal = await userHelper.getCartProductTotal(
       req.session.user._id
     );
-
-
 
     res.json(response);
   });
@@ -336,10 +334,7 @@ router.post("/remove-cart-product", (req, res) => {
 //---------------add-default-address------------------
 
 router.post("/add-default-address", (req, res) => {
-
   userHelper.getDefaultAddress(req.body.addressId).then(async (response) => {
-
-
     req.session.selectAddress = await response;
     res.redirect("/place-order");
   });
@@ -376,7 +371,7 @@ router.post("/place-order", verifyLogin, async (req, res) => {
   let totalPrice = await userHelper.getTotalAmount(req.session.user._id);
   req.session.totalPrice = totalPrice;
   let userData = await userHelper.getUserData(req.session.user._id);
-  req.session.userData
+  req.session.userData;
 
   //   if(req.body.payment_method=="online"){
   //   console.log(products)
@@ -433,21 +428,15 @@ router.post("/place-order", verifyLogin, async (req, res) => {
 });
 
 router.get("/success/:id", async (req, res) => {
-
-
   req.session.userData = await userHelper.getUserData(req.params.id);
 
+  let totalPrice = await userHelper.getTotalAmount(req.session.userData._id);
 
-let  totalPrice = await userHelper.getTotalAmount(req.session.userData._id);
-
-
-
-
-console.log(totalPrice);
-console.log("4444444444444444");
-console.log(req.query.PayerID);
-console.log(req.query.paymentId);
-console.log("4444444444444444");
+  console.log(totalPrice);
+  console.log("4444444444444444");
+  console.log(req.query.PayerID);
+  console.log(req.query.paymentId);
+  console.log("4444444444444444");
 
   let payerId = req.query.PayerID;
   let paymentId = req.query.paymentId;
@@ -463,7 +452,7 @@ console.log("4444444444444444");
         products,
         total,
         req.session.appliedCoupon,
-        req.params.id,
+        req.params.id
       )
       .then((response) => {
         res.redirect("/orders");
@@ -476,7 +465,6 @@ router.post("/verify-payment", async (req, res) => {
   let products = await userHelper.getCartProducts(req.session.userData);
 
   let totalPrice = await userHelper.getTotalAmount(req.session.user._id);
-
 
   await userHelper
     .verifyPayment(req.body)
@@ -501,7 +489,6 @@ router.post("/verify-payment", async (req, res) => {
 
 //------------------------user  account ---------------------------
 router.get("/account", verifyLogin, async (req, res) => {
-
   let userData = await userHelper.getUserData(req.session.user._id);
   res.render("user/pages/profile", {
     userUi: true,
@@ -517,7 +504,6 @@ router.get("/account", verifyLogin, async (req, res) => {
   router.get("/account-addresses", verifyLogin, async (req, res) => {
     let address = await userHelper.getAddress(req.session.userData._id);
 
-
     res.render("user/pages/account_addresses", {
       userUi: true,
       category: req.session.category,
@@ -530,7 +516,6 @@ router.get("/account", verifyLogin, async (req, res) => {
   });
 
 router.post("/add-address", async (req, res) => {
-
   let userId = req.session.userData._id;
 
   await userHelper
@@ -538,21 +523,17 @@ router.post("/add-address", async (req, res) => {
     .then(res.json({ status: true }));
 }),
   router.get("/deleteAddress/:id", (req, res) => {
-
     userHelper.deleteAddress(req.params.id).then((response) => {
       res.json({ status: true });
     });
   }),
   router.post("/edit-address/:id", (req, res) => {
- 
     userHelper.updateAddress(req.params.id, req.body).then((response) => {
       res.redirect("/account-addresses");
     });
   }),
   //------------------------edit-profile-----------------------------
   router.get("/edit-profile", verifyLogin, async (req, res) => {
-
-
     let userData = await userHelper.getUserData(req.session.user._id);
 
     res.render("user/pages/edit-profile", {
@@ -566,18 +547,13 @@ router.post("/add-address", async (req, res) => {
   });
 
 router.post("/edit-profile", upload.array("proImage"), (req, res, next) => {
-
   let proimg = {};
 
   req.files.forEach(function (files, index, ar) {
-
-
     proimg.image = req.files[index].filename;
   });
 
-
   let userId = req.session.userData._id;
-
 
   userHelper.editProfile(req.body, proimg, userId).then(() => {
     req.session.submit = true;
@@ -688,16 +664,13 @@ router.get("/orders/:id", async (req, res) => {
 });
 
 router.get("/cancel-order/:id", (req, res) => {
-
   userHelper.cancelOrder(req.params.id).then(res.json({ status: true }));
 });
 router.get("/return-order/:id", (req, res) => {
-
   userHelper.returnOrder(req.params.id).then(res.json({ status: true }));
 });
 
 router.get("/ship-order/:id", (req, res) => {
-
   userHelper.shipOrder(req.params.id).then(res.json({ status: true }));
 });
 
@@ -788,43 +761,24 @@ router.get("/add-to-wishlist/:id", async (req, res) => {
   console.log(req.params.id);
 });
 
-
-
 //-------------wish list ---------------------
 
+router.get("/wishlist", verifyLogin, async (req, res) => {
+  let wishlist = await userHelper.getwishlist(req.session.user);
 
-
-router.get('/wishlist',verifyLogin, async(req,res)=>{
-
-let wishlist= await userHelper.getwishlist(req.session.user)
-
-res.render('user/pages/wishlist',{
-  userUi:true,
-   logedIn: req.session.loggedIn,
+  res.render("user/pages/wishlist", {
+    userUi: true,
+    logedIn: req.session.loggedIn,
     category: req.session.category,
-  cartCount: req.session.cartCount,
- products:wishlist
-})
+    cartCount: req.session.cartCount,
+    products: wishlist,
+  });
+});
 
-
-
-
-
-
-})
-
-
-router.get("/removewishlist/:id",async(req,res)=>{
-
-  
- await userHelper.removewishlist(req.params.id).then((response)=>{
-    res.json({proremoved:true})
-
- })
-
-
-})
-
-
+router.get("/removewishlist/:id", async (req, res) => {
+  await userHelper.removewishlist(req.params.id).then((response) => {
+    res.json({ proremoved: true });
+  });
+});
 
 module.exports = router;

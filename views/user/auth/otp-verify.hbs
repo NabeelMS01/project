@@ -39,18 +39,18 @@ form input{
             <span class="text-danger"> {{otpErr}}</span>
   {{/if}}
 
-             <h5 class="m-0">Mobile phone verification</h5><span class="mobile-text">Enter the code we just send on your mobile phone <br> <b class="text-danger">+91 {{number}}</b></span>
+             <span class="mobile-text">Enter the code we just send on your mobile phone <br> <b class="text-danger">+91 {{number}}</b></span>
           
                       <form action="/verify-otp" method="post" >
-                        <div class="mb-3">
-                          <label class="form-label" for="basic-default-fullname">Full Name</label>
-                          <input style="width: 200px;" name="otp" type="number" class="form-control m-auto" id="basic-default-fullname" placeholder="Enter Otp" maxlength=4  />
+                        <div class="mb-3 mt-2">
+                    
+                          <input style="width: 200px;" name="otp" type="number" class="form-control  m-auto " id="basic-default-fullname" placeholder="Enter Otp" maxlength=4  />
                         </div>
                      
                      
                      
                    
-                        <button type="submit" class="btn btn-primary">Send</button>
+                        <button type="submit" class="btn btn-primary mb-3">Send</button>
                       </form>
                  
 
