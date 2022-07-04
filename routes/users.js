@@ -91,8 +91,9 @@ router.get("/login", function (req, res, next) {
 });
 
 router.post("/login", (req, res) => {
+  let {email, password} =req.body;
   try{
-  if (req.body.email && req.body.password) {
+  if (email && password) {
     userHelper.doLogin(req.body).then((response) => {
       req.session.user = response.user;
 
@@ -100,7 +101,7 @@ router.post("/login", (req, res) => {
         userHelper.loginCheck(req.body).then(async (response) => {
           if (response.userstatus) {
             req.session.loggedIn = true;
-            let user = await userHelper.getPhone(req.body.email);
+            let user = await userHelper.getPhone(email);
 
             let number = parseInt(user.phone);
             req.session.phone = number;
@@ -261,6 +262,7 @@ router.get("/product-details/:id", (req, res) => {
   adminHelper.getProductDetails(id).then((product) => {
     // adminHelper.getAllCategory().then((category) => {
     if (!product) {
+      
       res.redirect("/productnotfound");
     }
 

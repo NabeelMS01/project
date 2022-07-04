@@ -36,7 +36,7 @@ router.get("/", async (req, res) => {
     let paypal = await adminHelper.getPaypalSale();
     let codSale = await adminHelper.getCodSale();
     totalOrders = totalOrders.length;
-    //  console.log(cardSale );
+
 
     res.render("admin/pages/home-admin", {
       admin: true,
@@ -70,17 +70,19 @@ router.get("/logout", (req, res) => {
 });
 
 router.post("/login", (req, res) => {
-  if (req.body.email != admin.email) {
+let {email,password}=req.body;
+
+  if (email != admin.email) {
     req.flash("message", "invalid email");
 
     res.redirect("/admin/login");
-  } else if (req.body.password != admin.password) {
+  } else if (password != admin.password) {
     req.flash("message", "invalid email");
 
     res.redirect("/admin/login");
   } else if (
-    req.body.email != admin.email &&
-    req.body.password != admin.password
+    email != admin.email &&
+    password != admin.password
   ) {
     req.flash("message", "invalid email and password");
 
@@ -97,7 +99,7 @@ router.get("/all-orders", varifyLogin, async (req, res) => {
   try {
     let orders = await adminHelper.getAllOrders();
 
-    console.log(orders);
+
     res.render("admin/pages/orderManagement/orders-admin", {
       admin: true,
       orders,
@@ -111,7 +113,7 @@ router.get("/order-details/:id", varifyLogin, async (req, res) => {
   try {
     let order = await adminHelper.getOrderDetails(req.params.id);
 
-    console.log(order);
+
     res.render("admin/pages/orderManagement/order-details", {
       admin: true,
       order,
@@ -202,13 +204,11 @@ router.get("/add-product", varifyLogin, async (req, res) => {
 router.post("/add-product", upload.array("multiImages"), (req, res, next) => {
 
   try{ 
-    console.log("ivide***********************");
-    console.log(req.file);
-    console.log(req.body);
+ 
     let arr = [];
   
     req.files.forEach(function (files, index, ar) {
-      console.log(req.files[index].filename);
+  
   
       arr.push(req.files[index].filename);
     });
@@ -255,7 +255,7 @@ try{
   var id = req.params.id;
 
   adminHelper.getProductDetails(id).then((product) => {
-    console.log(product.name);
+
 
     res.render("admin/pages/productManagement/edit-product.hbs", {
       admin: true,
@@ -276,13 +276,10 @@ router.post("/edit-product/:id", upload.array("multiImages"), (req, res) => {
   try{
     var id = req.params.id;
 
-    console.log("ivide***********************");
-    console.log(req.files);
-    console.log(req.body);
     let arr = [];
   
     req.files.forEach(function (files, index, ar) {
-      console.log(req.files[index].filename);
+ 
   
       arr.push(req.files[index].filename);
     });
@@ -326,8 +323,7 @@ router.get("/view-category", varifyLogin, (req, res) => {
   try{
   adminHelper.getAllCategory().then(async (categories) => {
     let subCategory = await adminHelper.getAllSubcategory();
-    console.log(subCategory);
-    console.log("//////////////////88888888888888");
+
     res.render("admin/pages/categoryManagement/view-category", {
       admin: true,
       categories,
@@ -475,7 +471,7 @@ router.post("/add-product-offer/:id", varifyLogin, async (req, res) => {
   await adminHelper
     .addProductOffer(req.params.id, req.body, product)
     .then((response) => {
-      console.log(response);
+
       res.json({ offerStatus: true });
     });
   }catch(err){
@@ -537,10 +533,10 @@ router.post("/add-category-offer/:id", async (req, res) => {
 
 router.get("/remove-category-offer/:id", varifyLogin, async (req, res) => {
   try{
-  console.log(req.params.id);
+
   await adminHelper.removeCategoryOffer(req.params.id).then((resolve) => {
     res.redirect("/admin/category-offer");
-    console.log(req.params.id);
+
   });
 }catch(err){
   req.redirect('/error404')
@@ -565,7 +561,7 @@ router.post("/add-coupon", varifyLogin, (req, res) => {
   try{
 
   adminHelper.addCouponCode(req.body).then((response) => {
-    console.log("here");
+
     res.json({ status: true });
   });  }catch(err){
     req.redirect('/error404')
@@ -586,7 +582,7 @@ try{
 router.get("/sales-report", varifyLogin, async (req, res) => {
   try{
   let orders = await adminHelper.getAllOrders();
-  console.log(orders);
+
   let totalAmount = await adminHelper.getTotalRevenue();
 
   res.render("admin/pages/sales-report", { admin: true, orders, totalAmount });
@@ -596,25 +592,26 @@ router.get("/sales-report", varifyLogin, async (req, res) => {
 }
 });
 router.post("/sales-report", async (req, res) => {
+  let{from_date,end_date } =req.body;
 
   try{
 
   let orders = await adminHelper.getAllOrdersByDate(
-    req.body.from_date,
-    req.body.end_date
+   from_date,
+    end_date
   );
 
   let totalAmount = await adminHelper.getTotalRevenueByDate(
-    req.body.from_date,
-    req.body.end_date
+    from_date,
+  end_date
   );
 
   res.render("admin/pages/sales-report", {
     admin: true,
     orders,
     totalAmount,
-    startDate: req.body.from_date,
-    endDate: req.body.end_date,
+    startDate: from_date,
+    endDate: end_date,
   });
 }catch(err){
   req.redirect('/error404')
@@ -642,12 +639,11 @@ router.get("/add-banners", varifyLogin, async (req, res) => {
 
 router.post("/add-banners", upload.array("bannerimage"), async (req, res) => {
   try{
-  console.log(req.files);
-  console.log(req.body);
+ 
   let arr = [];
 
   req.files.forEach(function (files, index, ar) {
-    console.log(req.files[index].filename);
+
 
     arr.push(req.files[index].filename);
   });
@@ -686,7 +682,7 @@ router.get("/edit-banner/:id", varifyLogin, async (req, res) => {
   try{
   let subCategory = await adminHelper.getAllSubcategory();
   let banner = await adminHelper.getBannerDetails(req.params.id);
-  console.log(banner);
+
 
   res.render("admin/pages/bannerManagement/editBanner", {
     admin: true,
@@ -703,12 +699,11 @@ router.post(
   upload.array("bannerimage"),
   async (req, res) => {
     try{
-    console.log(req.files);
-    console.log(req.body);
+
     let arr = [];
 
     req.files.forEach(function (files, index, ar) {
-      console.log(req.files[index].filename);
+  
 
       arr.push(req.files[index].filename);
     });
@@ -768,12 +763,11 @@ router.post(
   upload.array("cardimage"),
   async (req, res) => {
     try{
-    console.log(req.files);
-    console.log(req.body);
+
     let arr = [];
 
     req.files.forEach(function (files, index, ar) {
-      console.log(req.files[index].filename);
+      
 
       arr.push(req.files[index].filename);
     });
@@ -841,12 +835,11 @@ router.post(
   upload.array("cardimage"),
   async (req, res) => {
     try{
-    console.log(req.files);
-    console.log(req.body);
+
     let arr = [];
 
     req.files.forEach(function (files, index, ar) {
-      console.log(req.files[index].filename);
+
 
       arr.push(req.files[index].filename);
     });

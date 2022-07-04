@@ -712,14 +712,15 @@ if(totalRevenue[0]){  console.log(totalRevenue[0].total);
   },
 
   addCouponCode: (data) => {
+    let{coupon_code,offer}=data;
     return new Promise(async (resolve, reject) => {
       data.offer = parseInt(data.offer);
       await db
         .get()
         .collection(collection.COUPON_COLLECTION)
         .insertOne({
-          coupon_code: data.coupon_code,
-          offer: data.offer,
+          coupon_code: coupon_code,
+          offer: offer,
           status: true,
         })
         .then(() => {
@@ -751,6 +752,10 @@ if(totalRevenue[0]){  console.log(totalRevenue[0].total);
   //----------------------Banner Management---------------
 
   addBanner: (banner, files) => {
+
+
+
+
     return new Promise(async (resolve, reject) => {
       banner.image = files;
       banner.status = true;
