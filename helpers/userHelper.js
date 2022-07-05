@@ -143,7 +143,7 @@ module.exports = {
 
       let password = await bcrypt.hash(dataBody.password, 10);
 
-      await db
+   await   await db
         .get()
         .collection(collection.USER_COLLECTION)
         .updateOne(

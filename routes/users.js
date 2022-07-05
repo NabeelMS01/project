@@ -695,7 +695,7 @@ router.post("/account-password-change", async (req, res) => {
     .then(async (response) => {
       if (response.status) {
         await userHelper
-          .changePassword(userData, req.session.body)
+          .changePassword(userData, req.body)
           .then((response) => {
             if (response.status) {
               // res.redirect('/account-password-change')
