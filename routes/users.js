@@ -93,6 +93,7 @@ router.get("/login", function (req, res, next) {
 router.post("/login", (req, res) => {
   let {email, password} =req.body;
   try{
+
   if (email && password) {
     userHelper.doLogin(req.body).then((response) => {
       req.session.user = response.user;
@@ -186,7 +187,7 @@ router.post("/signup", (req, res) => {
   }
 });
 //------------------------OTP VErification------------------------------
-router.get("/otp-varify", (req, res) => {
+router.get("/otp-varify", (req, res) => { 
   res.render("user/auth/otp-verify", {
     otpErr: req.session.otpErr,
     number: req.session.number,
@@ -823,7 +824,7 @@ router.post("/apply-coupon", async (req, res) => {
           .then(async () => {
             let cart = await userHelper.getCartByUser(req.session.user._id);
             req.session.appliedCoupon = coupon;
-            req.session.couponmsg = `coupon applied !! ₹ ${cart.coupon_offer} offer added`;
+            req.session.couponmsg =  `${cart.coupon_offer}`;
             res.json({ coupon, totalAmount, cart });
           });
       } else {

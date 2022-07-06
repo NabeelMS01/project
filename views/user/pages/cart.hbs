@@ -175,7 +175,7 @@
 
                 </div>
                 {{#if couponmsg}}
-                <span id="couponmsgspan" class="text-danger">{{couponmsg}}</span> <span
+                <span id="couponmsgspan" class="text-danger">coupon applied !! ₹ {{couponmsg}}  offer added</span> <span
                     onclick="removeCoupon('{{cart._id}}')" style="color: rgb(0, 47, 255); cursor: pointer; "
                     id="removecpn">remove coupon</span>
                 {{/if}}
@@ -183,7 +183,7 @@
                 <div class="cart__total">
                     <h6>Cart total</h6>
                     <ul>
-                        <li>Subtotal <span>₹ <span id="totalAmount">{{totalAmount}} </span></span></li>
+                        <li>Discount <span> - ₹ <span id="totalAmount">   {{#if couponmsg}}{{couponmsg}}{{else}} 0{{/if}}</span></span></li>
                         <li>Total <span>₹ <span id="subTotal">{{totalAmount}} </span></span></li>
                     </ul>
                     {{!-- <a href="/place-order" class="primary-btn"></a> --}}
