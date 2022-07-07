@@ -1003,6 +1003,7 @@ module.exports = {
 
   validateOffer: () => {
     return new Promise(async (resolve, reject) => {
+      try{
       let products = await db
         .get()
         .collection(collection.PRODUCT_COLLECTION)
@@ -1026,6 +1027,10 @@ module.exports = {
       }
 
       resolve();
+    }catch(err){
+      resolve();
+
+    }
     });
   },
 
