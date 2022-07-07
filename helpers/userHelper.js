@@ -143,7 +143,7 @@ module.exports = {
 
       let password = await bcrypt.hash(dataBody.password, 10);
 
-   await   await db
+      await await db
         .get()
         .collection(collection.USER_COLLECTION)
         .updateOne(
@@ -1010,8 +1010,6 @@ module.exports = {
         .toArray();
       let i;
 
-    
-
       for (i = 0; i < products.length; i++) {
         if (products[i].offer_status) {
           let nowDate = new Date().toISOString().split("T")[0];
@@ -1219,15 +1217,31 @@ module.exports = {
     });
   },
 
-  removewishlist:(id)=>{
-    return new Promise(async(resolve,reject)=>{
-      await db.get().collection(collection.WISHLIST_COLLECTION).deleteOne({_id:ObjectId(id)}).then((response)=>{
+  removewishlist: (id) => {
+    return new Promise(async (resolve, reject) => {
+      await db
+        .get()
+        .collection(collection.WISHLIST_COLLECTION)
+        .deleteOne({ _id: ObjectId(id) })
+        .then((response) => {
+          resolve();
+        });
+    });
+  },
 
-        resolve()
-      })
-    })
-  }
+  //-------------search products------------------------------
 
+  searchProducts: (query) => {
+    return new Promise(async (resolve, reject) => {
+      let product =await db
+        .get()
+        .collection(collection.PRODUCT_COLLECTION)
+        .find({ name: { $regex: query, $options: "$i" } })
+        .toArray();
 
+        console.log(product);
 
+      resolve(product);
+    });
+  },
 };

@@ -832,7 +832,7 @@ router.post("/apply-coupon", async (req, res) => {
       }
     }
   } catch (err) {
-    console.log(err);
+    req.redirect('/error404')
   }
 });
 
@@ -893,5 +893,33 @@ router.get("/removewishlist/:id", async (req, res) => {
     res.json({ proremoved: true });
   });
 });
+
+router.get('/searchresult',(req,res)=>{
+
+let products = req.session.searchresult; 
+
+  res.render('user/pages/shop',{
+    userUi: true,
+    logedIn: req.session.loggedIn,
+    category: req.session.category,
+    cartCount: req.session.cartCount,
+    products:products
+  
+
+
+
+  })
+
+
+})
+
+router.post('/search',async(req,res)=>{
+
+   req.session.searchresult =await userHelper.searchProducts(req.body.name)
+
+   res.redirect('/searchresult')
+
+})
+
 
 module.exports = router;
