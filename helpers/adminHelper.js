@@ -84,24 +84,19 @@ module.exports = {
   getProductDetails: (id) => {
     console.log(id);
     return new Promise((resolve, reject) => {
-try{    
-   db.get()
-  .collection(collection.PRODUCT_COLLECTION)
-  .findOne({ _id: ObjectId(id) })
-  .then((data) => {
-    console.log(data);
-    resolve(data);
-
-
-  });      }catch(err){
-console.log("here is the err");
-  resolve()
-  }
-    
+      try {
+        db.get()
+          .collection(collection.PRODUCT_COLLECTION)
+          .findOne({ _id: ObjectId(id) })
+          .then((data) => {
+            console.log(data);
+            resolve(data);
+          });
+      } catch (err) {
+        console.log("here is the err");
+        resolve();
+      }
     });
-
-
-
   },
 
   //-----------------edit product -------------------------
@@ -335,41 +330,33 @@ console.log("here is the err");
   },
   getTotalRevenue: () => {
     return new Promise(async (resolve, reject) => {
-
-   let   totalRevenue = await db
+      let totalRevenue = await db
         .get()
         .collection(collection.ORDER_COLLECTION)
         .aggregate([
           {
+            $project:{
+              "totalAmount":"$totalAmount"           }
+          },
+          {
             $group: {
               _id: 0,
               total: {
-                $sum: "$totalAmount",
-              },
-            },
+                "$sum": "$totalAmount"
+              }
+            }
           },
         ])
         .toArray();
 
-       if(totalRevenue[0]){
+      console.log(totalRevenue);
+
+      if (totalRevenue[0]) {
         resolve(totalRevenue[0].total);
-       }else{
-        resolve()
-       }
-
-     
-         
-    
-
-      
-
-
-      
+      } else {
+        resolve();
+      }
     });
-
-
-
-    
   },
   getCardSale: () => {
     return new Promise(async (resolve, reject) => {
@@ -433,64 +420,67 @@ console.log("here is the err");
     });
   },
 
-
-
-//----------------------get sales by date---------------------------
-getAllOrdersByDate:(startDate,endDate)=>{
-  startDate=startDate.toString()
-  endDate=endDate.toString()
-console.log(startDate);
-  return new Promise(async(resolve,reject)=>{
-    let orders =await db.get().collection(collection.ORDER_COLLECTION).aggregate([
-      {$match:{
-       order_time:{
-        $gte: new Date(startDate),$lte:new Date(endDate)
-       }
-      }
-    },{
-      $sort:{date:1}
-    }
-    ]).toArray()
-
-    resolve(orders)
-  })
-
-
-}
-,
-getTotalRevenueByDate:(startDate,endDate)=>{
-  startDate=startDate.toString()
-  endDate=endDate.toString()
-  return new Promise(async(resolve,reject)=>{
+  //----------------------get sales by date---------------------------
+  getAllOrdersByDate: (startDate, endDate) => {
+    startDate = startDate.toString();
+    endDate = endDate.toString();
     console.log(startDate);
-    let totalAmount =await db.get().collection(collection.ORDER_COLLECTION).aggregate([
-      {$match:{
-       "order_time":{
-        $gte: new Date(startDate),$lte:new Date(endDate)
-       }
+    return new Promise(async (resolve, reject) => {
+      let orders = await db
+        .get()
+        .collection(collection.ORDER_COLLECTION)
+        .aggregate([
+          {
+            $match: {
+              order_time: {
+                $gte: new Date(startDate),
+                $lte: new Date(endDate),
+              },
+            },
+          },
+          {
+            $sort: { date: 1 },
+          },
+        ])
+        .toArray();
+
+      resolve(orders);
+    });
+  },
+  getTotalRevenueByDate: (startDate, endDate) => {
+    startDate = startDate.toString();
+    endDate = endDate.toString();
+    return new Promise(async (resolve, reject) => {
+      console.log(startDate);
+      let totalAmount = await db
+        .get()
+        .collection(collection.ORDER_COLLECTION)
+        .aggregate([
+          {
+            $match: {
+              order_time: {
+                $gte: new Date(startDate),
+                $lte: new Date(endDate),
+              },
+            },
+          },
+          {
+            $group: {
+              _id: 0,
+              total: {
+                $sum: "$totalAmount",
+              },
+            },
+          },
+        ])
+        .toArray();
+      try {
+        resolve(totalAmount[0].total);
+      } catch (err) {
+        resolve();
       }
-    },{
-
-      
-      $group: {
-        _id: 0,
-        total: {
-          $sum: "$totalAmount",
-        },
-      },
-    },
-    ]).toArray()
- try{
-  resolve(totalAmount[0].total)
- }catch (err){
-  resolve()
- }
-  
-  
-  
-  })
-},
-
+    });
+  },
 
   //-------------------------------get cod sale report------------------
   getCodSale: () => {
@@ -515,13 +505,12 @@ getTotalRevenueByDate:(startDate,endDate)=>{
         ])
         .toArray();
 
-if(totalRevenue[0]){  console.log(totalRevenue[0].total);
-  resolve(totalRevenue[0].total); }else{
-    resolve()
-  }
-     
-
-
+      if (totalRevenue[0]) {
+        console.log(totalRevenue[0].total);
+        resolve(totalRevenue[0].total);
+      } else {
+        resolve();
+      }
     });
   },
   //------------------------add product pffer------------------------
@@ -712,7 +701,7 @@ if(totalRevenue[0]){  console.log(totalRevenue[0].total);
   },
 
   addCouponCode: (data) => {
-    let{coupon_code,offer}=data;
+    let { coupon_code, offer } = data;
     return new Promise(async (resolve, reject) => {
       data.offer = parseInt(data.offer);
       await db
@@ -752,10 +741,6 @@ if(totalRevenue[0]){  console.log(totalRevenue[0].total);
   //----------------------Banner Management---------------
 
   addBanner: (banner, files) => {
-
-
-
-
     return new Promise(async (resolve, reject) => {
       banner.image = files;
       banner.status = true;
@@ -968,14 +953,15 @@ if(totalRevenue[0]){  console.log(totalRevenue[0].total);
         });
     });
   },
-  deleteCollectionCard:(id)=>{
-    return new Promise(async(resolve,reject)=>{
-
-      await db.get().collection(collection.CARD_SUB_CATEGORY_COLLECTION).deleteOne({_id:ObjectId(id)}).then((response)=>{
- resolve()
-      })
-
-    })
-  }
-
+  deleteCollectionCard: (id) => {
+    return new Promise(async (resolve, reject) => {
+      await db
+        .get()
+        .collection(collection.CARD_SUB_CATEGORY_COLLECTION)
+        .deleteOne({ _id: ObjectId(id) })
+        .then((response) => {
+          resolve();
+        });
+    });
+  },
 };
