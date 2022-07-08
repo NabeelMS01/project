@@ -530,6 +530,8 @@ module.exports = {
   },
   getTotalAmount: (userId) => {
     return new Promise(async (resolve, reject) => {
+      try{
+    
       let cartTotalAmount = await db
         .get()
         .collection(collection.CART_COLLECTION)
@@ -599,6 +601,12 @@ module.exports = {
       } else {
         resolve(cartTotalAmount[0].total);
       }
+
+    }catch(err){
+  resolve()
+
+
+    }
     });
 
     // console.log("************asdasdfasdf*****");
