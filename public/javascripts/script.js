@@ -84,7 +84,7 @@
                         }else{
                                        document.getElementById(proId).innerHTML=quantity+count
                                        document.getElementById('totalAmount').innerHTML = response.totalAmount
-                              document.getElementById('subTotal').innerHTML = response.totalAmount
+                              
                         }             
     
     
