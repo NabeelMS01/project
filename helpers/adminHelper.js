@@ -284,7 +284,7 @@ module.exports = {
         .get()
         .collection(collection.ORDER_COLLECTION)
         .find()
-        .sort({ date: -1 })
+        .sort({ order_time: -1 })
         .toArray();
 
       resolve(orders);
