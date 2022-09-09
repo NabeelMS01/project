@@ -87,7 +87,10 @@ module.exports = {
   //------------------login ---------------------
   doLogin: (userData) => {
     return new Promise(async (resolve, reject) => {
-      let response = {};
+     
+
+      try {
+         let response = {};
       let loginStatus = false;
 
       let user = await db
@@ -110,10 +113,22 @@ module.exports = {
         resolve({ status: false });
         console.log("Login failed");
       }
+
+      } catch (error) {
+        console.log(error);
+      }
+
+
+
+
+
     });
   },
   doPasswordCheck: (userData, bodyData) => {
     return new Promise(async (resolve, reject) => {
+
+      try {
+        
       console.log(bodyData.oldPassword);
       console.log("0------------00000");
 
@@ -133,6 +148,9 @@ module.exports = {
             console.log("Login failed");
           }
         });
+      } catch (error) {
+        console.log(error);
+      }
     });
   },
   changePassword: (userData, dataBody) => {

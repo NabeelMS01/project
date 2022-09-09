@@ -25,6 +25,9 @@ const varifyLogin = (req, res, next) => {
 // -----------------Getting admin home page------------------
 
 router.get("/", async (req, res) => {
+
+  try {
+    
   if (!req.session.admin) {
     res.redirect("/admin/login");
   } else {
@@ -50,6 +53,9 @@ router.get("/", async (req, res) => {
   }
 
   // res.render('admin/login',{admin:true})
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 router.get("/login", (req, res) => {
@@ -66,30 +72,39 @@ router.get("/login", (req, res) => {
 });
 
 router.get("/logout", (req, res) => {
+ try {
   req.session.destroy().then(res.redirect("/admin"));
+ } catch (error) {
+  console.log(error);
+ }
 });
 
 router.post("/login", (req, res) => {
+  try {
+    
 let {email,password}=req.body;
 
-  if (email != admin.email) {
-    req.flash("message", "invalid email");
+if (email != admin.email) {
+  req.flash("message", "invalid email");
 
-    res.redirect("/admin/login");
-  } else if (password != admin.password) {
-    req.flash("message", "invalid email");
+  res.redirect("/admin/login");
+} else if (password != admin.password) {
+  req.flash("message", "invalid email");
 
-    res.redirect("/admin/login");
-  } else if (
-    email != admin.email &&
-    password != admin.password
-  ) {
-    req.flash("message", "invalid email and password");
+  res.redirect("/admin/login");
+} else if (
+  email != admin.email &&
+  password != admin.password
+) {
+  req.flash("message", "invalid email and password");
 
-    res.redirect("/admin/login");
-  } else {
-    req.session.admin = true;
-    res.redirect("/admin");
+  res.redirect("/admin/login");
+} else {
+  req.session.admin = true;
+  res.redirect("/admin");
+}
+  } catch (error) {
+ console.log(error);   
   }
 });
 
@@ -391,6 +406,7 @@ try{
     admin: true,
     subCategory,
   });  }catch(err){
+    console.log(err);
     req.redirect('/error404')
   }
 });
@@ -404,6 +420,7 @@ router.get("/edit-category/:id", varifyLogin, (req, res) => {
       category,
     });
   });  }catch(err){
+    console.log(err);
     req.redirect('/error404')
   }
 });
@@ -415,6 +432,7 @@ router.post("/edit-category/:id", (req, res) => {
   adminHelper.editCategory(id, req.body).then((response) => {
     res.redirect("/admin/view-category");
   });  }catch(err){
+    console.log(err);
     req.redirect('/error404')
   }
 });
@@ -428,6 +446,7 @@ router.get("/delete-category/:id", varifyLogin, (req, res) => {
     res.redirect("/admin/view-category");
   });
 }catch(err){
+  console.log(err);
   req.redirect('/error404')
 }
 });
@@ -436,6 +455,7 @@ router.get("/offer-management", varifyLogin, (req, res) => {
   try{
   res.render("admin/pages/offerManagement/manageOffer", { admin: true });
 }catch(err){
+  console.log(err);
   req.redirect('/error404')
 }
 });
@@ -448,6 +468,7 @@ router.get("/product-offer", varifyLogin, async (req, res) => {
     admin: true,
     products,
   });  }catch(err){
+     console.log(err);
     req.redirect('/error404')
   }
 });
